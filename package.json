@@ -1,7 +1,7 @@
 {
-  "name": "genetalg",
+  "name": "neuroevolution",
   "version": "0.1.0",
-  "description": "Neuroevolution",
+  "description": "Neuroevolution: evolving neural networks using tensorflow.js and genetic algorithm",
   "main": "index.js",
   "scripts": {
     "test": "nyc --reporter=html --reporter=text mocha \"./{,!(node_modules)/**/}*.spec.js\"",
@@ -10,6 +10,8 @@
   "author": "Romain Simon <contact@romainsimon.net>",
   "license": "MIT",
   "keywords": [
+    "neuroevolution",
+    "tensorflow",
     "genetic",
     "algorithm",
     "evolutionary"
