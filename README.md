@@ -1,4 +1,4 @@
-<h1 align="center">Neuroevolutio</h1>
+<h1 align="center">Neuroevolution</h1>
 
 <div align="center">
   Evolving a population of Neural Networks using Tensorflow.js and Genetic Algorithm in ES6
