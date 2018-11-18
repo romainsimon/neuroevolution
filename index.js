@@ -1,3 +1,3 @@
-const { Population } = require('./src/population.class')
+const Population = require('./src/population.class')
 
-module.exports = { Population }
+module.exports = Population

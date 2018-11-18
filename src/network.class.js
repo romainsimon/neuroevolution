@@ -6,7 +6,7 @@ const tf = require('@tensorflow/tfjs')
  * Neural Network
  *
  */
-class NeuralNetwork {
+class Network {
   /**
    * Create a new Neural Network
    *
@@ -45,7 +45,7 @@ class NeuralNetwork {
    * @return {NeuralNetwork} clonie
    */
   clone() {
-    let clonie = new NeuralNetwork(this.nbInput, this.nbHidden, this.nbOutput)
+    let clonie = new Network(this.nbInput, this.nbHidden, this.nbOutput)
     clonie.dispose()
     clonie.inputWeights = tf.clone(this.inputWeights)
     clonie.outputWeights = tf.clone(this.outputWeights)
@@ -61,4 +61,4 @@ class NeuralNetwork {
   }
 }
 
-module.exports = { NeuralNetwork }
+module.exports = Network

@@ -1,7 +1,7 @@
 'use strict';
 
 const { expect } = require('chai')
-const { Genome } = require('./genome.class')
+const Genome = require('./genome.class')
 
 describe('Genome', () => {
 
@@ -9,15 +9,7 @@ describe('Genome', () => {
     it('should create a new Genome with all properties', () => {
       const genome = new Genome()
       expect(genome).to.be.an('object')
-      expect(genome).to.have.all.keys('nodeGenes', 'connectionGenes', 'fitness')
-    })
-  })
-
-  describe('nextInnovationNumber', () => {
-    it('should increase next innovation number', () => {
-      const genome = new Genome()
-      expect(genome.nextInnovationNumber()).to.equal(2)
-      // @TODO : Add connection + check next
+      expect(genome).to.have.all.keys('nodes', 'connections', 'fitness')
     })
   })
 

@@ -1,10 +1,9 @@
 'use strict'
 
-const { Genome } = require('./genome.class')
-const { stringDiff } = require('./fitness')
+const Genome = require('./genome.class')
 
 /**
- * Population is of group of chromosomes
+ * Population is of group of genomes
  *
  */
 class Population {
@@ -12,17 +11,13 @@ class Population {
   /**
    * Create a new population of chromosomes
    *
-   * @param {number} populationSize     Total size of the chromosomes population
-   * @param {number} chromosomeLength   Number of genes in a chromosome
-   * @param {Array}  genesPool          Possible genes for a chromosome
+   * @param {number} populationSize     Total size of the genomes population
    */
-  constructor(populationSize=10, chromosomeLength=20, genesPool=[0,1]) {
+  constructor(populationSize=10, showLogs=false) {
     this.generation = 0
     this.populationSize = populationSize
-    this.chromosomeLength = chromosomeLength
-    this.genesPool = genesPool
-    this.currentPopulation = [...Array(this.populationSize)]
-      .map(chromosome => new Genome(chromosomeLength, genesPool))
+    this.showLogs = showLogs
+    this.currentPopulation = [...Array(this.populationSize)].map(genome => new Genome())
   }
 
   /**
@@ -31,17 +26,17 @@ class Population {
    *
    * @param {Function} fitnessFunction     Fitness function used to score chromosomes
    */
-  evaluate(fitnessFunction=stringDiff) {
-    for (const chromosome of this.currentPopulation)
-      chromosome.calculateFitness(fitnessFunction)
-    this.currentPopulation.sort((chA,chB) => chB.fitness - chA.fitness)
-    if (this.generation % 100 === 0) {
+  evaluate(fitnessFunction) {
+    for (const genome of this.currentPopulation)
+      genome.calculateFitness(fitnessFunction)
+    this.currentPopulation.sort((geneA, geneB) => geneB.fitness - geneA.fitness)
+    if (this.generation % 100 === 0 && this.showLogs) {
       console.log(`  ${this.currentPopulation[0].dna} (${this.currentPopulation[0].fitness})`)
     }
   }
 
   /**
-   * Select the best chromosomes in the population according to survival rate
+   * Select the best genomes in the population according to survival rate
    * Kill all other chromosomes (sorry guys)
    *
    * @param {number}   survivalRate     Percent of population that survives [0-1]
@@ -55,7 +50,7 @@ class Population {
   }
 
   /**
-   * Reproduce existing chromosomes in population via crossover
+   * Reproduce existing genomes in population via crossover
    * Mutates children and adds them to population
    *
    * @param {number}   survivalRate     Percent of population that survives [0-1]
@@ -76,14 +71,14 @@ class Population {
   }
 
   /**
-   * Create new random chromosomes to match the max population size
+   * Create new random genomes to match the max population size
    * It does not do crossover or mutation, but simply repopulates
    *
    */
   repopulate() {
     const nbToGenerate = this.populationSize - this.currentPopulation.length
-    const newChromosomes = Array(nbToGenerate).fill('').map(ch => new Chromosome().dna)
-    this.currentPopulation = [...this.currentPopulation, ...newChromosomes]
+    const newGenomes = Array(nbToGenerate).fill('').map(ch => new Genome())
+    this.currentPopulation = [...this.currentPopulation, ...newGenomes]
   }
 
   /**
@@ -93,16 +88,18 @@ class Population {
    * @param {number} iterations     Number of iterations
    */
   evolve(iterations=1000, fitnessFunction=stringDiff) {
-    while (this.generation<iterations) {
-      if (this.generation % 100 === 0) console.log(`- Generation ${this.generation}`)
+    const startGeneration = this.generation
+    while (this.generation < startGeneration + iterations) {
+      if (this.generation % 100 === 0 && this.showLogs)
+        console.log(`- Generation ${this.generation}`)
       this.evaluate(fitnessFunction)
       this.select()
       this.reproduce()
     }
-    console.log(`===> Best Chromosome: ${this.currentPopulation[0].dna}`)
+    if (this.showLogs) console.log(`===> Best Genome : ${this.currentPopulation[0]}`)
     return this.currentPopulation[0]
   }
 }
 
 
-module.exports = { Population }
+module.exports = Population

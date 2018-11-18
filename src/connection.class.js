@@ -3,10 +3,10 @@
 let lastInnovationNumber = 0
 
 /**
- * Connection Gene is part of a genome
+ * Connection gene is part of a genome
  *
  */
-class ConnectionGene {
+class Connection {
 
   /**
    * Create a new Connection Gene
@@ -32,4 +32,4 @@ class ConnectionGene {
   }
 }
 
-module.exports = { ConnectionGene }
+module.exports = Connection

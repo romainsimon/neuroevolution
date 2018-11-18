@@ -1,13 +1,13 @@
 'use strict';
 
 const { expect } = require('chai')
-const { ConnectionGene } = require('./connection-gene.class')
+const Connection = require('./connection.class')
 
-describe('Gene', () => {
+describe('Connection gene', () => {
 
   describe('creation', () => {
-    it('should create a new Conection Gene with all properties', () => {
-      const gene = new ConnectionGene(4, 5)
+    it('should create a new Connection Gene with all properties', () => {
+      const gene = new Connection(4, 5)
       expect(gene).to.be.an('object')
       expect(gene).to.have.all.keys('inputNode', 'outputNode', 'disabled', 'weight', 'innovationNumber')
       expect(gene.inputNode).to.equal(4)
@@ -17,16 +17,16 @@ describe('Gene', () => {
       expect(gene.innovationNumber).to.equal(1)
     })
     it('should increase innovation', () => {
-      const gene1 = new ConnectionGene(1, 2)
+      const gene1 = new Connection(1, 2)
       expect(gene1.innovationNumber).to.equal(2)
-      const gene2 = new ConnectionGene(1, 2, 2)
+      const gene2 = new Connection(1, 2)
       expect(gene2.innovationNumber).to.equal(3)
     })
   })
 
   describe('disable', () => {
-    it('should disabled gene', () => {
-      const gene = new ConnectionGene()
+    it('should disabled connection', () => {
+      const gene = new Connection()
       gene.disable()
       expect(gene.disabled).to.equal(true)
     })

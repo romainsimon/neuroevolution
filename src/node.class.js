@@ -1,13 +1,13 @@
 'use strict'
 
-const { getRandomItem } = require('../utils/selecttion')
+const { getRandomItem } = require('../utils/selection')
 const nodeTypes = ['input', 'hidden', 'output']
 
 /**
- * Node Gene is part of a genome
+ * Node gene is part of a genome
  *
  */
-class NodeGene {
+class Node {
 
   /**
    * Create a new Node Gene
@@ -17,11 +17,11 @@ class NodeGene {
    * @param {number} weight             Weight of gene/connection
    */
   constructor(id, type) {
-    if (type && noteTypes.includes(type))
+    if (type && !nodeTypes.includes(type))
       throw new Error('Node type is not valid')
     this.id = id
     this.type = type || getRandomItem(nodeTypes)
   }
 }
 
-module.exports = { NodeGene }
+module.exports = Node

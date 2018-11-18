@@ -13,9 +13,9 @@ describe('Selection', () => {
       expect(random).to.be.within(1, 10)
     })
     it('should get a random string from array', () => {
-      const items = ['input', 'output']
+      const items = ['input', 'hidden', 'output']
       const random = getRandomItem(items)
-      expect(random).to.equal('input').or.equal('output')
+      expect(random).to.be.oneOf(items)
     })
   })
 

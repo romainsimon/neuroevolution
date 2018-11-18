@@ -1,9 +1,9 @@
 'use strict'
 
-const { NodeGene } = require('./node-gene.class')
-const { ConnectionGene } = require('./connection-gene.class')
-const { NeuralNetwork } = require('./network.class')
-const { getRandomItem } = require('../utils/selecttion')
+const Node = require('./node.class')
+const Connection = require('./connection.class')
+const NeuralNetwork = require('./network.class')
+const { getRandomItem } = require('../utils/selection')
 
 /**
  * Genome is combination of genes
@@ -15,13 +15,19 @@ class Genome {
   /**
    * Create a new Genome
    *
-   * @param {number} populationSize     Total size of the chromosomes population
-   * @param {number} length             Number of genes in a chromosome
-   * @param {Array}  genesPool          Possible genes for a chromosome
+   * @param {Array} nodes         Array of nodes
+   * @param {Array} connections   Array of connections
    */
-  constructor(nodeGenes, connectionGenes) {
-    this.nodeGenes = nodeGenes || [new NodeGene(1, 'input'), new NodeGene(2, 'hidden'), new NodeGene(3, 'output')]
-    this.connectionGenes = connectionGenes || [new ConnectionGene(1, 2), new ConnectionGene(2, 3)]
+  constructor(nodes, connections) {
+    this.nodes = nodes || [
+      new Node(1, 'input'),
+      new Node(2, 'hidden'),
+      new Node(3, 'output')
+    ]
+    this.connections = connections || [
+      new Connection(1, 2),
+      new Connection(2, 3)
+    ]
     this.fitness = 0
   }
 
@@ -30,8 +36,8 @@ class Genome {
    *
    * @return {Integer} id              Id of the next gene to be created
    */
-  nextGeneId() {
-    return this.nodeGenes[this.nodeGenes.length-1].id + 1
+  nextNode() {
+    return this.nodes[this.nodes.length-1].id + 1
   }
 
   /**
@@ -41,11 +47,11 @@ class Genome {
    * @return {Number} fitness          Fitness score
    */
   possibleNewConnections() {
-    const existingConnections = this.connectionGenes.
-      .filter(gene => !gene.disabled)
-      .map(gene => gene.inputNode+'-'+gene.outputNode)
-    const possibleConnections = this.nodeGenes.reduce((acc, input, i) =>
-      acc.concat(this.nodeGenes.slice(i+1).map(output => [input.id, output.id] )),
+    const existingConnections = this.connections
+      .filter(conn => !conn.disabled)
+      .map(conn => conn.inputNode+'-'+conn.outputNode)
+    const possibleConnections = this.nodes.reduce((acc, input, i) =>
+      acc.concat(this.nodes.slice(i+1).map(output => [input.id, output.id] )),
     []).filter(gene => !existingConnections.includes(gene[0]+'-'+gene[1]))
     return possibleConnections
   }
@@ -71,8 +77,8 @@ class Genome {
    * @return {Genome} child     Child genome
    */
   crossover(genomeB) {
-    const childNodes = 22
-    const childConnections = 22
+    const childNodes = 22 // @TODO
+    const childConnections = 22 // @TODO
     return new Genome(childNodes, childConnections)
   }
 
@@ -90,8 +96,8 @@ class Genome {
    */
   addConnection() {
     const randomConnection = getRandomItem(this.possibleNewConnections())
-    const newConnection = new ConnectionGene(randomConnection[0], randomConnection[1])
-    this.connectionGenes.push(newConnection)
+    const newConnection = new Connection(randomConnection[0], randomConnection[1])
+    this.connections.push(newConnection)
   }
 
   /**
@@ -101,9 +107,9 @@ class Genome {
    */
   addNode() {
     const randomConnection = getRandomItem(this.connectionGenes().filter(gene => !gene.disabled))
-    this.nodeGenes.push(new NodeGene(this.nextGeneId(), 'hidden'))
-    this.connectionGenes.push(new ConnectionGene(randomConnection.inputNode, newNode.id))
-    this.connectionGenes.push(new ConnectionGene(newNode.id, randomConnection.outputNode))
+    this.nodes.push(new Node(this.nextNode(), 'hidden'))
+    this.connections.push(new ConnectionGene(randomConnection.inputNode, newNode.id))
+    this.connections.push(new ConnectionGene(newNode.id, randomConnection.outputNode))
     randomConnection.disable()
   }
 
@@ -118,4 +124,4 @@ class Genome {
   }
 }
 
-module.exports = { Genome }
+module.exports = Genome
