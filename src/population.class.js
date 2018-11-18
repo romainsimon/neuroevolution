@@ -1,6 +1,6 @@
 'use strict'
 
-const { Chromosome } = require('./chromosome.class')
+const { Genome } = require('./genome.class')
 const { stringDiff } = require('./fitness')
 
 /**
@@ -22,7 +22,7 @@ class Population {
     this.chromosomeLength = chromosomeLength
     this.genesPool = genesPool
     this.currentPopulation = [...Array(this.populationSize)]
-      .map(chromosome => new Chromosome(chromosomeLength, genesPool))
+      .map(chromosome => new Genome(chromosomeLength, genesPool))
   }
 
   /**

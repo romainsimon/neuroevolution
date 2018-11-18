@@ -1,7 +1,7 @@
 <h1 align="center">Neuroevolution</h1>
 
 <div align="center">
-  Evolving a population of Neural Networks using Tensorflow.js and Genetic Algorithm in ES6
+  Evolving a population of Neural Networks using Tensorflow.js and Genetic Algorithm in ES6. This is an implementation of [NEAT](http://nn.cs.utexas.edu/downloads/papers/stanley.ec02.pdf) (Neuro Evolution of Augmenting topologies)
 </div>
 
 <br />
@@ -25,3 +25,5 @@
 `npm install neuroevolution`
 
 ## Usage
+
+work in progress :)
