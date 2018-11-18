@@ -9,7 +9,7 @@ const Genome = require('./genome.class')
 class Population {
 
   /**
-   * Create a new population of chromosomes
+   * Create a new population of genomes
    *
    * @param {number} populationSize     Total size of the genomes population
    */
@@ -24,7 +24,7 @@ class Population {
    * Evalutate the fitness of entire population according to fitness function
    * Sorts the population from highest fitness score to lowest
    *
-   * @param {Function} fitnessFunction     Fitness function used to score chromosomes
+   * @param {Function} fitnessFunction     Fitness function used to score genomes
    */
   evaluate(fitnessFunction) {
     for (const genome of this.currentPopulation)

@@ -20,6 +20,14 @@ describe('Genome', () => {
     })
   })
 
+  describe('dna', () => {
+    it('should return a valid dna string', () => {
+      const genome = new Genome()
+      expect(genome.dna()).to.be.an('object')
+      console.log(genome.dna())
+    })
+  })
+
   describe('getNode', () => {
     it('should get a node by its innovation number', () => {
       const genome = new Genome()

@@ -31,6 +31,13 @@ class Genome {
     this.fitness = 0
   }
 
+  dna() {
+    return this.connections
+      .filter(c => !c.disabled)
+      .map(c => `${c.innovationNumber}[${c.inputNode}>${c.outputNode}]`)
+      .join()
+  }
+
   /**
    * Get a node by its innovation number
    *
