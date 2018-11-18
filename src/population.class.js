@@ -11,7 +11,8 @@ class Population {
   /**
    * Create a new population of genomes
    *
-   * @param {number} populationSize     Total size of the genomes population
+   * @param {Number} populationSize     Total size of the genomes population
+   * @param {Boolean} showLogs          Will display logs if true
    */
   constructor(populationSize=10, showLogs=false) {
     this.generation = 0
@@ -30,7 +31,7 @@ class Population {
     for (const genome of this.currentPopulation)
       genome.calculateFitness(fitnessFunction)
     this.currentPopulation.sort((geneA, geneB) => geneB.fitness - geneA.fitness)
-    if (this.generation % 100 === 0 && this.showLogs) {
+    if (this.generation % 10 === 0 && this.showLogs) {
       console.log(`  ${this.currentPopulation[0].dna()} (${this.currentPopulation[0].fitness})`)
     }
   }
@@ -87,7 +88,7 @@ class Population {
   evolve(iterations=1000, fitnessFunction) {
     const startGeneration = this.generation
     while (this.generation < startGeneration + iterations) {
-      if (this.generation % 100 === 0 && this.showLogs)
+      if (this.generation % 10 === 0 && this.showLogs)
         console.log(`- Generation ${this.generation}`)
       this.evaluate(fitnessFunction)
       this.select()

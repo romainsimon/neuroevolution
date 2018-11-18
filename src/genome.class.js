@@ -152,8 +152,10 @@ class Genome {
    * The new node is between the two new connections.
    */
   addNode() {
-    const randomConnection = getRandomItem(this.connections().filter(gene => !gene.disabled))
-    this.nodes.push(new Node('hidden'))
+    const randomConnection = getRandomItem(this.connections.filter(gene => !gene.disabled))
+    console.log(this.connections)
+    const newNode = new Node('hidden')
+    this.nodes.push(newNode)
     this.connections.push(new Connection(randomConnection.inputNode, newNode.innovationNumber))
     this.connections.push(new Connection(newNode.innovationNumber, randomConnection.outputNode))
     randomConnection.disable()

@@ -1,6 +1,7 @@
 'use strict';
 
 const { expect } = require('chai')
+const Node = require('../src/node.class')
 const { getRandomItem } = require('./selection')
 
 describe('Selection', () => {
@@ -15,6 +16,12 @@ describe('Selection', () => {
     it('should get a random string from array', () => {
       const items = ['input', 'hidden', 'output']
       const random = getRandomItem(items)
+      expect(random).to.be.oneOf(items)
+    })
+   it('should get a random item from node', () => {
+      const items = [new Node('input'), new Node('output')]
+      const random = getRandomItem(items)
+      expect(random).to.be.an('object')
       expect(random).to.be.oneOf(items)
     })
   })

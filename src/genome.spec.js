@@ -13,7 +13,7 @@ describe('Genome', () => {
       expect(genome).to.be.an('object')
       expect(genome).to.have.all.keys('nodes', 'connections', 'fitness')
     })
-   it('should have connections with increasing innovation numbers', () => {
+    it('should have connections with increasing innovation numbers', () => {
       const genome = new Genome()
       expect(genome.connections).to.be.an('array')
       expect(genome.connections[0].innovationNumber).to.equal(1)
