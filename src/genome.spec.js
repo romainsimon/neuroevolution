@@ -23,8 +23,8 @@ describe('Genome', () => {
   describe('dna', () => {
     it('should return a valid dna string', () => {
       const genome = new Genome()
-      expect(genome.dna()).to.be.an('object')
-      console.log(genome.dna())
+      expect(genome.dna()).to.be.an('string')
+      expect(genome.dna()).to.equal('1[1>2],2[2>3]')
     })
   })
 

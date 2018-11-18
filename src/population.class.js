@@ -31,7 +31,7 @@ class Population {
       genome.calculateFitness(fitnessFunction)
     this.currentPopulation.sort((geneA, geneB) => geneB.fitness - geneA.fitness)
     if (this.generation % 100 === 0 && this.showLogs) {
-      console.log(`  ${this.currentPopulation[0].dna} (${this.currentPopulation[0].fitness})`)
+      console.log(`  ${this.currentPopulation[0].dna()} (${this.currentPopulation[0].fitness})`)
     }
   }
 
@@ -94,7 +94,7 @@ class Population {
       this.reproduce()
     }
     if (this.showLogs)
-      console.log(`=> Fitest genome: ${this.currentPopulation[0]}`)
+      console.log(`=> Fitest genome: ${this.currentPopulation[0].dna()}`)
     return this.currentPopulation[0]
   }
 }
