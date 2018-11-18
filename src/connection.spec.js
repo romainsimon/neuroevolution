@@ -7,7 +7,7 @@ describe('Connection gene', () => {
 
   describe('creation', () => {
     it('should create a new Connection Gene with all properties', () => {
-      const gene = new Connection(4, 5)
+      const gene = new Connection(4, 5, 1)
       expect(gene).to.be.an('object')
       expect(gene).to.have.all.keys('inputNode', 'outputNode', 'disabled', 'weight', 'innovationNumber')
       expect(gene.inputNode).to.equal(4)
@@ -16,11 +16,11 @@ describe('Connection gene', () => {
       expect(gene.weight).to.be.within(0, 1)
       expect(gene.innovationNumber).to.equal(1)
     })
-    it('should increase innovation', () => {
+    it('should increase innovation number ', () => {
       const gene1 = new Connection(1, 2)
-      expect(gene1.innovationNumber).to.equal(2)
+      expect(gene1.innovationNumber).to.equal(1)
       const gene2 = new Connection(1, 2)
-      expect(gene2.innovationNumber).to.equal(3)
+      expect(gene2.innovationNumber).to.equal(2)
     })
   })
 

@@ -83,6 +83,10 @@ describe('Population', () => {
       const population = new Population()
       population.evolve(200)
       expect(population.generation).to.equal(200)
+      population.evolve(200)
+      expect(population.generation).to.equal(400)
+      population.evolve(200)
+      expect(population.generation).to.equal(600)
     })
 
     it('should evolve population with custom fitness function', () => {
@@ -97,7 +101,7 @@ describe('Population', () => {
       const population = new Population()
       population.evaluate()
       const firstFitness = population.currentPopulation[0].fitness
-      population.evolve()
+      population.evolve(120)
       const lastFitness = population.currentPopulation[0].fitness
       expect(lastFitness).to.be.at.least(firstFitness)
     })

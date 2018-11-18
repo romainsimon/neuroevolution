@@ -52,8 +52,6 @@ class Population {
   /**
    * Reproduce existing genomes in population via crossover
    * Mutates children and adds them to population
-   *
-   * @param {number}   survivalRate     Percent of population that survives [0-1]
    */
   reproduce() {
     const children = []
@@ -73,11 +71,10 @@ class Population {
   /**
    * Create new random genomes to match the max population size
    * It does not do crossover or mutation, but simply repopulates
-   *
    */
   repopulate() {
     const nbToGenerate = this.populationSize - this.currentPopulation.length
-    const newGenomes = Array(nbToGenerate).fill('').map(ch => new Genome())
+    const newGenomes = Array(nbToGenerate).fill('').map(genome => new Genome())
     this.currentPopulation = [...this.currentPopulation, ...newGenomes]
   }
 
@@ -87,7 +84,7 @@ class Population {
    *
    * @param {number} iterations     Number of iterations
    */
-  evolve(iterations=1000, fitnessFunction=stringDiff) {
+  evolve(iterations=1000, fitnessFunction) {
     const startGeneration = this.generation
     while (this.generation < startGeneration + iterations) {
       if (this.generation % 100 === 0 && this.showLogs)
@@ -96,10 +93,10 @@ class Population {
       this.select()
       this.reproduce()
     }
-    if (this.showLogs) console.log(`===> Best Genome : ${this.currentPopulation[0]}`)
+    if (this.showLogs)
+      console.log(`=> Fitest genome: ${this.currentPopulation[0]}`)
     return this.currentPopulation[0]
   }
 }
-
 
 module.exports = Population

@@ -3,6 +3,8 @@
 const { getRandomItem } = require('../utils/selection')
 const nodeTypes = ['input', 'hidden', 'output']
 
+let currentNumber = 0
+
 /**
  * Node gene is part of a genome
  *
@@ -10,16 +12,16 @@ const nodeTypes = ['input', 'hidden', 'output']
 class Node {
 
   /**
-   * Create a new Node Gene
+   * Create a new Node gene
    *
-   * @param {number} id          Reference id of the node
-   * @param {number} outputNode         Reference number of output node
-   * @param {number} weight             Weight of gene/connection
+   * @param {number} type              Type of node created
+   * @param {number} innovationNumber  Innovation number can be set for inital nodes
    */
-  constructor(id, type) {
+  constructor(type, innovationNumber) {
     if (type && !nodeTypes.includes(type))
       throw new Error('Node type is not valid')
-    this.id = id
+    if (!innovationNumber) currentNumber++
+    this.innovationNumber = currentNumber || innovationNumber
     this.type = type || getRandomItem(nodeTypes)
   }
 }
