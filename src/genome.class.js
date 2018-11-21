@@ -15,26 +15,28 @@ class Genome {
   /**
    * Create a new Genome
    *
-   * @param {Array} nodes         Array of nodes
-   * @param {Array} connections   Array of connections
+   * @param {Number} nbInput      Number of input nodes
+   * @param {Number} nbOutput     Number of output nodes
+   * @param {Array} nodes         Array of existing nodes
+   * @param {Array} connections   Array of existing connections
    */
-  constructor(nodes, connections) {
+  constructor(nbInput=1, nbOutput=1, nodes, connections) {
     this.nodes = nodes || [
-      new Node('input', 1),
-      new Node('hidden', 2),
-      new Node('output', 3)
+      ...Array(nbInput).fill(new Node('input')),
+      ...Array(nbOutput).fill(new Node('output'))
     ]
-    this.connections = connections || [
-      new Connection(1, 2, 1),
-      new Connection(2, 3, 2)
-    ]
+    this.connections = connections || []
     this.fitness = 0
   }
 
+  /**
+   * Shows a text representation of DNA/connections
+   *
+   * @return {String} dna   DNA respresenting all connections
+   */
   dna() {
     return this.connections
-      .filter(c => !c.disabled)
-      .map(c => `${c.innovationNumber}[${c.inputNode}>${c.outputNode}]`)
+      .map(c => `${c.innovationNumber}[${c.inputNode}${c.disabled?'X':'>'}${c.outputNode}]`)
       .join()
   }
 
