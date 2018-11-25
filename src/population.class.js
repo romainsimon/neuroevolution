@@ -41,7 +41,7 @@ class Population {
    *
    * @param  {Genome} genomeA    A genome
    * @param  {Genome} genomeB    Another genome
-   * @return {Number} distance   Child genome
+   * @return {Number} distance   distance between two genomes
    */
   distance(genomeA, genomeB) {
     const weights = { excess: 1, disjoint: 1, weight: 1 }
@@ -50,8 +50,30 @@ class Population {
 
     let nbExcess = 0
     let nbDisjoint = 0
-    let avgWeightDiff = 0
+    let nbMatching = 0
+    let weightDiff = 0
 
+    const maxInnovationA = genomeA.innovation.getLast()
+    const maxInnovationB = genomeB.innovation.getLast()
+    const maxInnovation = Math.max(maxInnovationA, maxInnovationB)
+
+    while (c <= maxInnovation) {
+      const aConn = genomeA.getConnection(c)
+      const bConn = genomeB.getConnection(c)
+      if (aConn && !bConn) {
+        if (c > maxInnovationB) nbExcess++
+        else nbDisjoint++
+      } else if (!aConn && bConn) {
+        if (c > maxInnovationA) nbExcess++
+        else nbDisjoint++
+      } else if (aConn && bConn) {
+        nbMatching++
+        weightDiff += aConn.weight + bConn.weight
+      }
+      c++
+    }
+
+    const avgWeightDiff = weightDiff / nbMatching
     const distance = weights.excess*nbExcess/N
       + weights.disjoint*nbDisjoint/N
       + weights.weight*avgWeightDiff
