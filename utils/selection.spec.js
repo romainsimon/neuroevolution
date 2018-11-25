@@ -1,7 +1,7 @@
 'use strict';
 
 const { expect } = require('chai')
-const Node = require('../src/node.class')
+const { Node } = require('../src/node.class')
 const { getRandomItem } = require('./selection')
 
 describe('Selection', () => {

@@ -1,7 +1,7 @@
 'use strict';
 
 const { expect } = require('chai')
-const Node = require('./node.class')
+const { Node } = require('./node.class')
 
 describe('Node gene', () => {
 

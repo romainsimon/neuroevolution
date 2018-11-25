@@ -4,6 +4,7 @@ const tf = require('@tensorflow/tfjs')
 
 /**
  * Neural Network
+ * @TODO This does not reflect the structure from genome yet
  *
  */
 class Network {
@@ -61,4 +62,4 @@ class Network {
   }
 }
 
-module.exports = Network
+module.exports = { Network }

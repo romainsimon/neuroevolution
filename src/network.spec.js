@@ -1,7 +1,7 @@
 'use strict';
 
 const { expect } = require('chai')
-const Network = require('./network.class')
+const { Network } = require('./network.class')
 
 describe('Neural Network', () => {
 
