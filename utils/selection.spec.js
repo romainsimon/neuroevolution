@@ -19,7 +19,7 @@ describe('Selection', () => {
       expect(random).to.be.oneOf(items)
     })
    it('should get a random item from node', () => {
-      const items = [new Node('input'), new Node('output')]
+      const items = [new Node(1, 'input'), new Node(2, 'output')]
       const random = getRandomItem(items)
       expect(random).to.be.an('object')
       expect(random).to.be.oneOf(items)

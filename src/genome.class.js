@@ -1,8 +1,9 @@
 'use strict'
 
-const { Node, lastNodeNumber } = require('./node.class')
-const { Connection, lastConnectionNumber } = require('./connection.class')
+const { Node } = require('./node.class')
+const { Connection } = require('./connection.class')
 const { Network } = require('./network.class')
+const { Innovation } = require('./innovation.class')
 const { getRandomItem } = require('../utils/selection')
 
 /**
@@ -21,10 +22,14 @@ class Genome {
    * @param {Array}  connections  Array of existing connections
    */
   constructor(nbInput=1, nbOutput=1, nodes, connections) {
-    this.nodes = nodes || [
-      ...Array(nbInput).fill(new Node('input')),
-      ...Array(nbOutput).fill(new Node('output'))
-    ]
+    this.innovation = new Innovation()
+    this.nodes = nodes || []
+    if (!nodes) {
+      for (let i=0; i<nbInput; ++i)
+        this.nodes.push(new Node(this.innovation.generate(), 'input'))
+      for (let o=0; o<nbOutput; ++o)
+        this.nodes.push(new Node(this.innovation.generate(), 'output'))
+    }
     this.connections = connections || []
     this.nbInput = nbInput
     this.nbOutput = nbOutput
@@ -106,7 +111,7 @@ class Genome {
     const childConnections = []
     let n = 1
     let c = 1
-    while (n <= lastNodeNumber) {
+    while (n <= this.innovation.getLast()) {
       const aNode = this.getNode(n)
       const bNode = genomeB.getNode(n)
       if (aNode && bNode)
@@ -119,7 +124,7 @@ class Genome {
         childNodes.push(aNode || bNode)
       n++
     }
-    while (c <= lastConnectionNumber) {
+    while (c <= this.innovation.getLast()) {
       const aConn = this.getConnection(c)
       const bConn = genomeB.getConnection(c)
       if (aConn && bConn)
@@ -132,7 +137,6 @@ class Genome {
         childConnections.push(aConn || bConn)
       c++
     }
-    // @TODO : not null ?
     return new Genome(null, null, childNodes, childConnections)
   }
 
@@ -150,7 +154,7 @@ class Genome {
    */
   addConnection() {
     const randomConnection = getRandomItem(this.possibleNewConnections())
-    const newConnection = new Connection(this.nbInput, this.nbOutput, randomConnection[0], randomConnection[1])
+    const newConnection = new Connection(this.innovation.generate(), randomConnection[0], randomConnection[1])
     this.connections.push(newConnection)
   }
 
@@ -161,10 +165,10 @@ class Genome {
    */
   addNode() {
     const randomConnection = getRandomItem(this.connections.filter(gene => !gene.disabled))
-    const newNode = new Node('hidden')
+    const newNode = new Node(this.innovation.generate(), 'hidden')
     this.nodes.push(newNode)
-    this.connections.push(new Connection(randomConnection.inputNode, newNode.innovationNumber, 1))
-    this.connections.push(new Connection(newNode.innovationNumber, randomConnection.outputNode, randomConnection.weight))
+    this.connections.push(new Connection(this.innovation.generate(), randomConnection.inputNode, newNode.innovationNumber, 1))
+    this.connections.push(new Connection(this.innovation.generate(), newNode.innovationNumber, randomConnection.outputNode, randomConnection.weight))
     randomConnection.disable()
   }
 

@@ -1,7 +1,5 @@
 'use strict'
 
-let lastConnectionNumber = 0
-
 /**
  * Connection gene is part of a genome
  *
@@ -11,16 +9,19 @@ class Connection {
   /**
    * Create a new Connection gene
    *
+   * @param {number} innovationNumber   Innovation number can be set
    * @param {number} inputNode          Reference number of input node
    * @param {number} outputNode         Reference number of output node
-   * @param {number} innovationNumber   Innovation number can be set
-   * @param {number} weight             Weight of gene/connection
+   * @param {number} weight             Weight of connection [0, 1]
    */
-  constructor(inputNode, outputNode, innovationNumber, weight) {
+  constructor(innovationNumber, inputNode, outputNode, weight) {
+    if (!innovationNumber)
+      throw new Error('Connection should have an innovation number')
+    if (!inputNode || !outputNode)
+      throw new Error('Connection should have an input and output node')
     this.inputNode = inputNode
     this.outputNode = outputNode
-    if (!innovationNumber) lastConnectionNumber++
-    this.innovationNumber = innovationNumber || lastConnectionNumber
+    this.innovationNumber = innovationNumber
     this.disabled = false
     this.weight = weight || Math.random()
   }
@@ -33,4 +34,4 @@ class Connection {
   }
 }
 
-module.exports = { Connection, lastConnectionNumber }
+module.exports = { Connection }
