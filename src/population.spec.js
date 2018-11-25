@@ -10,12 +10,12 @@ describe('Population', () => {
     it('should create a new Population with all properties', () => {
       const population = new Population()
       expect(population).to.be.an('object')
-      expect(population).to.have.all.keys('generation', 'populationSize', 'showLogs', 'currentPopulation')
+      expect(population).to.have.all.keys('generation', 'species', 'populationSize', 'showLogs', 'currentPopulation')
     })
 
-    it('should create a new Population with generation 0', () => {
+    it('should create a new Population with generation 1', () => {
       const population = new Population()
-      expect(population.generation).to.equal(0)
+      expect(population.generation).to.equal(1)
     })
 
     it('should create a new Population with population size', () => {

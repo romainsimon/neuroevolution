@@ -103,6 +103,46 @@ describe('Genome', () => {
     })
   })
 
+  describe('distance', () => {
+    it('should calculate distance between two genomes', () => {
+      const genomeA = new Genome(1, 3, [
+        new Node(1, 'input'),
+        new Node(2, 'hidden'),
+        new Node(3, 'hidden'),
+        new Node(4, 'output')
+      ], [
+        new Connection(1, 1, 2),
+        new Connection(2, 1, 3),
+        new Connection(3, 1, 4),
+        new Connection(4, 2, 4)
+      ])
+      const genomeB = genomeA
+      const distance = genomeA.distance(genomeB)
+      const distance2 = genomeB.distance(genomeA)
+      expect(distance).to.be.a('number')
+      expect(distance).to.equal(distance2)
+    })
+    it('should inscrease distance when mutation occurs', () => {
+      const genomeA = new Genome(1, 3, [
+        new Node(1, 'input'),
+        new Node(2, 'hidden'),
+        new Node(3, 'hidden'),
+        new Node(4, 'output')
+      ], [
+        new Connection(1, 1, 2),
+        new Connection(2, 1, 3),
+        new Connection(3, 1, 4),
+        new Connection(4, 2, 4)
+      ])
+      const genomeB = genomeA
+      const distance1 = genomeA.distance(genomeB)
+      genomeB.mutate()
+      genomeB.mutate()
+      const distance2 = genomeA.distance(genomeB)
+      expect(distance2).to.be.above(distance1)
+    })
+  })
+
   describe('mutate', () => {
     it('should either add node or connection', () => {
       const genome = new Genome(1, 2)

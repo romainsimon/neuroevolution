@@ -19,6 +19,7 @@ class Population {
     this.populationSize = populationSize
     this.showLogs = showLogs
     this.currentPopulation = [...Array(this.populationSize)].map(genome => new Genome())
+    this.species = []
   }
 
   /**
@@ -34,51 +35,6 @@ class Population {
     // if (this.generation % 10 === 0 && this.showLogs) {
     //   console.log(`  ${this.currentPopulation[0].dna()} (${this.currentPopulation[0].fitness})`)
     //}
-  }
-
-  /**
-   * Calculates a distance between two genomes
-   *
-   * @param  {Genome} genomeA    A genome
-   * @param  {Genome} genomeB    Another genome
-   * @return {Number} distance   distance between two genomes
-   */
-  distance(genomeA, genomeB) {
-    const weights = { excess: 1, disjoint: 1, weight: 1 }
-    const totalGenes = Math.max(genomeA.connections.length, genomeB.connections.length)
-    const N = totalGenes > 20 ? totalGenes : 1
-
-    let nbExcess = 0
-    let nbDisjoint = 0
-    let nbMatching = 0
-    let weightDiff = 0
-
-    const maxInnovationA = genomeA.innovation.getLast()
-    const maxInnovationB = genomeB.innovation.getLast()
-    const maxInnovation = Math.max(maxInnovationA, maxInnovationB)
-
-    while (c <= maxInnovation) {
-      const aConn = genomeA.getConnection(c)
-      const bConn = genomeB.getConnection(c)
-      if (aConn && !bConn) {
-        if (c > maxInnovationB) nbExcess++
-        else nbDisjoint++
-      } else if (!aConn && bConn) {
-        if (c > maxInnovationA) nbExcess++
-        else nbDisjoint++
-      } else if (aConn && bConn) {
-        nbMatching++
-        weightDiff += aConn.weight + bConn.weight
-      }
-      c++
-    }
-
-    const avgWeightDiff = weightDiff / nbMatching
-    const distance = weights.excess*nbExcess/N
-      + weights.disjoint*nbDisjoint/N
-      + weights.weight*avgWeightDiff
-
-    return distance
   }
 
   /**
@@ -101,8 +57,14 @@ class Population {
   /**
    * Reproduce existing genomes in population via crossover
    * Mutates children and adds them to population
+   * This uses explicit fitness sharing to adjust the fitness
+   * according to species
+   *
+   * @param {number}   distanceThreshold     Threshold that defines the distance
+   *                                         below two genomes are considered part
+   *                                         of the same species
    */
-  reproduce() {
+  reproduce(distanceThreshold=1) {
     const children = []
     for (let i=0; i<this.currentPopulation.length; i++) {
       for (let j=i+1; j<this.currentPopulation.length; j++) {
