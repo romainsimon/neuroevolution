@@ -19,6 +19,10 @@ describe('Node gene', () => {
     it('should reject node without innovation number', () => {
       expect(() => new Node(null, 'input')).to.throw('Node should have an innovation number')
     })
+    it('should create new node with hidden type', () => {
+      const gene = new Node(2)
+      expect(gene.type).to.equal('hidden')
+    })
   })
 
 })

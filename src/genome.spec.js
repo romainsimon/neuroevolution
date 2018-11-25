@@ -21,11 +21,11 @@ describe('Genome', () => {
     })
     it('should preserve innovation numbers when copying a genome', () => {
       const genome1 = new Genome(2, 2)
+      genome1.addConnection()
       const genome2 = genome1
       expect(genome2.nodes[0].innovationNumber).to.equal(genome1.nodes[0].innovationNumber)
       expect(genome2.nodes[1].innovationNumber).to.equal(genome1.nodes[1].innovationNumber)
-      //expect(genome2.connections[0].innovationNumber).to.equal(genome1.connections[0].innovationNumber)
-      //expect(genome2.connections[1].innovationNumber).to.equal(genome1.connections[1].innovationNumber)
+      expect(genome2.connections[0].innovationNumber).to.equal(genome1.connections[0].innovationNumber)
     })
   })
 
