@@ -1,21 +1,21 @@
 'use strict'
 
-let lastInnovationNumber = 0
+let globalInnovationNumber = 0
 
 /**
  * Innovation Generator generates innovation numbers
+ * This allows historical markings of node/connection genes
  *
  */
 class Innovation {
 
   /**
-   * Create a new Node gene
+   * Create a new Innovation Generator
    *
-   * @param {number} innovationNumber   Innovation number can be set
-   * @param {number} type   Type of node created
+   * @returns {number} globalInnovationNumber   Innovation number
    */
   constructor() {
-    return lastInnovationNumber
+    return globalInnovationNumber
   }
 
   /**
@@ -24,7 +24,7 @@ class Innovation {
    * @return {number} number     last innovation number
    */
   getLast() {
-    return lastInnovationNumber
+    return globalInnovationNumber
   }
 
   /**
@@ -33,8 +33,8 @@ class Innovation {
    * @return {number} number     last innovation number
    */
   generate() {
-    lastInnovationNumber++
-    return lastInnovationNumber
+    globalInnovationNumber++
+    return globalInnovationNumber
   }
 
   /**
@@ -42,7 +42,7 @@ class Innovation {
    *
    */
   reset() {
-    lastInnovationNumber = 0
+    globalInnovationNumber = 0
   }
 }
 

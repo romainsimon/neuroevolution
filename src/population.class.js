@@ -15,7 +15,7 @@ class Population {
    * @param {Boolean} showLogs          Will display logs if true
    */
   constructor(populationSize=10, showLogs=false) {
-    this.generation = 0
+    this.generation = 1
     this.populationSize = populationSize
     this.showLogs = showLogs
     this.currentPopulation = [...Array(this.populationSize)].map(genome => new Genome())
@@ -113,16 +113,16 @@ class Population {
    */
   evolve(iterations=1000, fitnessFunction) {
     const startGeneration = this.generation
-    const maxGen = startGeneration + iterations
+    const maxGen = startGeneration + iterations - 1
     while (this.generation <= maxGen) {
       if (this.showLogs)
-        process.stdout.write(`- Generation ${this.generation}/${maxGen}${this.generation === mmxGen ?  '\n' : '\r'}`)
+        process.stdout.write(`- Generation ${this.generation}/${maxGen}${this.generation === maxGen ?  '\n' : '\r'}`)
       this.evaluate(fitnessFunction)
       this.select()
       this.reproduce()
     }
     if (this.showLogs)
-      console.log(`=> Fitest genome: ${this.currentPopulation[0].dna()}`)
+      console.log(`=> Fitest genome: ${this.currentPopulation[0].dna()} (${this.currentPopulation[0].fitness})`)
     return this.currentPopulation[0]
   }
 }

@@ -141,12 +141,15 @@ class Genome {
   }
 
   /**
-   * Mutates genome by either adding a node or connection
+   * Mutates genome by structural or non-structural mutation
+   *  - Add a new node
+   *  - Add a new connection
+   *  - Change weight of a connection
    *
    * @param {number} nodeChance    Chance of the mutation being a new node
    */
   mutate(nodeChance=.5) {
-    Math.random() >= nodeChance ? this.addNode() : this.addConnection()
+    Math.random() <= nodeChance && this.connections ? this.addConnection() : this.addNode()
   }
 
   /**
@@ -178,7 +181,8 @@ class Genome {
    * @TODO
    */
   generateNetwork() {
-    const network = new Network()
+    const nbHidden = this.nodes.filter(node => node.type === 'hidden').length
+    const network = new Network(this.nbInput, nbHidden, this.nbOutput)
     return network
   }
 }

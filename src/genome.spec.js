@@ -4,6 +4,7 @@ const { expect } = require('chai')
 const { Genome } = require('./genome.class')
 const { Node } = require('./node.class')
 const { Connection } = require('./connection.class')
+const { Innovation } = require('./innovation.class')
 
 describe('Genome', () => {
 
@@ -77,7 +78,7 @@ describe('Genome', () => {
     })
   })
 
-  describe('possibleNewConnnections', () => {
+  describe('possibleNewConnections', () => {
     it('should create all combinations of possible connections without existing and input-input or output-output', () => {
       const genome = new Genome(1, 3, [
         new Node(1, 'input'),
@@ -99,6 +100,15 @@ describe('Genome', () => {
       expect(newConn[1]).to.be.an('array')
       expect(newConn[1][0]).to.equal(3)
       expect(newConn[1][1]).to.equal(4)
+    })
+  })
+
+  describe('mutate', () => {
+    it('should either add node or connection', () => {
+      const genome = new Genome(1, 2)
+      genome.addConnection()
+      genome.mutate()
+      expect(genome.connections.length + genome.nodes.length).to.be.above(3)
     })
   })
 
@@ -128,11 +138,9 @@ describe('Genome', () => {
     })
 
     it('should create a child with genes from fitest parent', () => {
-      const genome1 = new Genome([
-        new Node(1, 'input'),
-        new Node(3, 'hidden'),
-        new Node(2, 'output')
-      ])
+      const innovation = new Innovation()
+      innovation.reset()
+      const genome1 = new Genome(1, 2)
       const genome2 = genome1
       genome2.addConnection()
       genome2.addConnection()
@@ -144,7 +152,15 @@ describe('Genome', () => {
       expect(children.nodes).to.have.lengthOf(3)
       expect(children.connections).to.have.lengthOf(2)
     })
+  })
 
+  describe('generateNetwork', () => {
+    it('should generate network', () => {
+      const genome = new Genome(1, 2)
+      const network = genome.generateNetwork()
+      expect(network).to.be.an('object')
+      // @TODO
+    })
   })
 
 })
