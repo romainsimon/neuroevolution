@@ -9,17 +9,15 @@ const { getRandomItem } = require('../utils/selection')
 /**
  * Genome is combination of genes
  * It can be mutated or combined with another genome (crossover)
- *
  */
 class Genome {
 
   /**
    * Create a new Genome
-   *
-   * @param {Number} nbInput      Number of input nodes
-   * @param {Number} nbOutput     Number of output nodes
-   * @param {Array}  nodes        Array of existing nodes
-   * @param {Array}  connections  Array of existing connections
+   * @param {number}    nbInput      Number of input nodes
+   * @param {number}    nbOutput     Number of output nodes
+   * @param {Object[]}  nodes        Array of existing nodes
+   * @param {Object[]}  connections  Array of existing connections
    */
   constructor(nbInput=1, nbOutput=1, nodes, connections) {
     this.innovation = new Innovation()
@@ -38,8 +36,7 @@ class Genome {
 
   /**
    * Shows a text representation of DNA/connections
-   *
-   * @return {String} dna   DNA respresenting all connections
+   * @return {string} DNA respresenting all connections
    */
   dna() {
     return this.connections
@@ -49,8 +46,7 @@ class Genome {
 
   /**
    * Get a node by its innovation number
-   *
-   * @param {number} number     Innovation number
+   * @param {number} number Innovation number
    */
   getNode(number) {
     const node = this.nodes.filter(n => n.innovationNumber === number)
@@ -59,8 +55,7 @@ class Genome {
 
   /**
    * Get a connection by its innovation number
-   *
-   * @param {number} number     Innovation number
+   * @param {number} number Innovation number
    */
   getConnection(number) {
     const connection = this.connections.filter(c => c.innovationNumber === number)
@@ -88,9 +83,8 @@ class Genome {
 
   /**
    * Evalutate the fitness of genome
-   *
-   * @param {Function} fitFunction     Fitness function used to score genomes
-   * @return {Number} fitness          Fitness score
+   * @param  {Function} fitFunction Fitness function used to score genomes
+   * @return {number}               Fitness score
    */
   calculateFitness(fitFunction) {
     this.fitness = fitFunction(this)
@@ -99,9 +93,8 @@ class Genome {
 
   /**
    * Calculates a distance between this genome and another genome
-   *
-   * @param  {Genome} genomeB    Another genome
-   * @return {Number} distance   distance between two genomes
+   * @param  {Genome} genomeB Another genome
+   * @return {number}         Distance between two genomes
    */
   distance(genomeB) {
     const weights = { excess: 1, disjoint: 1, weight: 1 }
@@ -147,9 +140,8 @@ class Genome {
    * This genome is combined with another one
    * Matching genes are chosen randomly between the two parents
    * Disjoint or excess genes are chosen in the more fit parent
-   *
-   * @param {Genome} genomeB    Another genome
-   * @return {Genome} child     Child genome
+   * @param  {Genome} genomeB Another genome
+   * @return {Genome}         Child genome
    */
   crossover(genomeB) {
     const childNodes = []
@@ -189,16 +181,15 @@ class Genome {
    * Mutates genome by structural or non-structural mutation
    *  - Add a new node
    *  - Add a new connection
-   *  - Change weight of a connection
-   *
-   * @param {number} nodeChance    Chance of the mutation being a new node
+   *  - Change weight of a connection (@TODO)
+   * @param {number} nodeChance Chance of the mutation being a new node
    */
   mutate(nodeChance=.5) {
     Math.random() <= nodeChance && this.connections ? this.addConnection() : this.addNode()
   }
 
   /**
-   * Mutates genome by adding a new connection.
+   * Mutates genome by adding a new connection
    */
   addConnection() {
     const randomConnection = getRandomItem(this.possibleNewConnections())
@@ -207,7 +198,7 @@ class Genome {
   }
 
   /**
-   * Mutates genome by adding a new node.
+   * Mutates genome by adding a new node
    * The connection gene being split is disabled, and two new connection genes are created.
    * The new node is between the two new connections.
    */
@@ -222,7 +213,6 @@ class Genome {
 
   /**
    * Generates the corresponding Neural Network
-   *
    * @TODO
    */
   generateNetwork() {

@@ -5,12 +5,10 @@ const tf = require('@tensorflow/tfjs')
 /**
  * Neural Network
  * @TODO This does not reflect the structure from genome yet
- *
  */
 class Network {
   /**
    * Create a new Neural Network
-   *
    * @param {number} nbInput      Number of input neurons
    * @param {number} nbHidden     Number of hidden neurons
    * @param {number} nbOutput     Number of output neurons
@@ -25,8 +23,7 @@ class Network {
 
   /**
    * Predict outut from input
-   *
-   * @param {Array} input      One hot encoded input
+   * @param  {Array} input     One hot encoded input
    * @return {Array} output    One hot encoded output
    */
   predict(input) {
@@ -42,7 +39,6 @@ class Network {
 
   /**
    * Create a clone a this neural network
-   *
    * @return {NeuralNetwork} clonie
    */
   clone() {

@@ -4,13 +4,11 @@ const { Genome } = require('./genome.class')
 
 /**
  * Population is of group of genomes
- *
  */
 class Population {
 
   /**
    * Create a new population of genomes
-   *
    * @param {Number} populationSize     Total size of the genomes population
    * @param {Boolean} showLogs          Will display logs if true
    */
@@ -25,8 +23,7 @@ class Population {
   /**
    * Evalutate the fitness of entire population according to fitness function
    * Sorts the population from highest fitness score to lowest
-   *
-   * @param {Function} fitnessFunction     Fitness function used to score genomes
+   * @param {Function} fitnessFunction Fitness function used to score genomes
    */
   evaluate(fitnessFunction) {
     for (const genome of this.currentPopulation)
@@ -39,9 +36,8 @@ class Population {
 
   /**
    * Select the best genomes in the population according to survival rate
-   * Kill all other genomes (sorry guys)
-   *
-   * @param {number}   survivalRate     Percent of population that survives [0-1]
+   * Kills all other genomes (sorry guys)
+   * @param {number} survivalRate  Percent of population that survives [0-1]
    */
   select(survivalRate=.2) {
 
@@ -59,7 +55,6 @@ class Population {
    * Mutates children and adds them to population
    * This uses explicit fitness sharing to adjust the fitness
    * according to species
-   *
    * @param {number}   distanceThreshold     Threshold that defines the distance
    *                                         below two genomes are considered part
    *                                         of the same species
@@ -92,7 +87,6 @@ class Population {
   /**
    * Evolves the population via different steps:
    * selection, crossover, mutation
-   *
    * @param {number} iterations     Number of iterations
    */
   evolve(iterations=1000, fitnessFunction) {

@@ -2,13 +2,11 @@
 
 /**
  * Connection gene is part of a genome
- *
  */
 class Connection {
 
   /**
    * Create a new Connection gene
-   *
    * @param {number} innovationNumber   Innovation number can be set
    * @param {number} inputNode          Reference number of input node
    * @param {number} outputNode         Reference number of output node
@@ -27,7 +25,7 @@ class Connection {
   }
 
   /**
-   * Disables a connection gene
+   * Disable a connection gene
    */
   disable() {
     this.disabled = true

@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 const { expect } = require('chai')
 const { Population } = require('./population.class')
