@@ -39,14 +39,14 @@ class Network {
 
   /**
    * Create a clone a this neural network
-   * @return {NeuralNetwork} clonie
+   * @return {NeuralNetwork} cloned neural network
    */
   clone() {
-    let clonie = new Network(this.nbInput, this.nbHidden, this.nbOutput)
-    clonie.dispose()
-    clonie.inputWeights = tf.clone(this.inputWeights)
-    clonie.outputWeights = tf.clone(this.outputWeights)
-    return clonie
+    let clone = new Network(this.nbInput, this.nbHidden, this.nbOutput)
+    clone.dispose()
+    clone.inputWeights = tf.clone(this.inputWeights)
+    clone.outputWeights = tf.clone(this.outputWeights)
+    return clone
   }
 
   /**

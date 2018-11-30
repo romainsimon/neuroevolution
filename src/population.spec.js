@@ -10,7 +10,7 @@ describe('Population', () => {
     it('should create a new Population with all properties', () => {
       const population = new Population()
       expect(population).to.be.an('object')
-      expect(population).to.have.all.keys('generation', 'species', 'populationSize', 'showLogs', 'currentPopulation')
+      expect(population).to.have.all.keys('generation', 'nbInput', 'nbOutput', 'species', 'populationSize', 'showLogs', 'currentPopulation')
     })
 
     it('should create a new Population with generation 1', () => {
@@ -80,28 +80,20 @@ describe('Population', () => {
   describe('evolve', () => {
 
     it('should evolve population to target generation', () => {
+      const dumbFitness = () => Math.random()
       const population = new Population()
-      population.evolve(200)
-      expect(population.generation).to.equal(200)
-      population.evolve(200)
-      expect(population.generation).to.equal(400)
-      population.evolve(200)
-      expect(population.generation).to.equal(600)
+      population.evolve(20, dumbFitness)
+      expect(population.generation).to.equal(21)
+      population.evolve(20, dumbFitness)
+      expect(population.generation).to.equal(41)
     })
 
-    it('should evolve population with custom fitness function', () => {
+    it.skip('should increase fitness over generations', () => {
+      const generationFitness = pop => pop.generation()
       const population = new Population()
-      const dumbFitness = () => 0.42
-      population.evolve(100, dumbFitness)
-      const lastFitness = population.currentPopulation[0].fitness
-      expect(lastFitness).to.equal(0.42)
-    })
-
-    it('should increase fitness over generations', () => {
-      const population = new Population()
-      population.evaluate()
+      population.evaluate(100, generationFitness)
       const firstFitness = population.currentPopulation[0].fitness
-      population.evolve(120)
+      population.evolve(300, generationFitness)
       const lastFitness = population.currentPopulation[0].fitness
       expect(lastFitness).to.be.at.least(firstFitness)
     })

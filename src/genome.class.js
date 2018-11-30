@@ -64,7 +64,6 @@ class Genome {
 
   /**
    * Lists all possible new connections
-   *
    * @return {Array} possibleConnections  An array of possible new connections that can be created
    */
   possibleNewConnections() {
@@ -193,6 +192,8 @@ class Genome {
    */
   addConnection() {
     const randomConnection = getRandomItem(this.possibleNewConnections())
+    if (!randomConnection)
+      return false
     const newConnection = new Connection(this.innovation.generate(), randomConnection[0], randomConnection[1])
     this.connections.push(newConnection)
   }
@@ -204,6 +205,8 @@ class Genome {
    */
   addNode() {
     const randomConnection = getRandomItem(this.connections.filter(gene => !gene.disabled))
+    if (!randomConnection)
+      return false
     const newNode = new Node(this.innovation.generate(), 'hidden')
     this.nodes.push(newNode)
     this.connections.push(new Connection(this.innovation.generate(), randomConnection.inputNode, newNode.innovationNumber, 1))

@@ -10,7 +10,7 @@ class Innovation {
 
   /**
    * Create a new Innovation Generator
-   * @returns {number} globalInnovationNumber   Innovation number
+   * @return {number} globalInnovationNumber   Innovation number
    */
   constructor() {
     return globalInnovationNumber

@@ -9,14 +9,18 @@ class Population {
 
   /**
    * Create a new population of genomes
-   * @param {Number} populationSize     Total size of the genomes population
-   * @param {Boolean} showLogs          Will display logs if true
+   * @param {Number}  populationSize  Total size of the genomes population
+   * @param {number}  nbInput         Number of input nodes
+   * @param {number}  nbOutput        Number of output node
+   * @param {Boolean} showLogs        Will display logs if true
    */
-  constructor(populationSize=10, showLogs=false) {
+  constructor(populationSize=10, nbInput=1, nbOutput=1, showLogs=false) {
     this.generation = 1
     this.populationSize = populationSize
+    this.nbInput = nbInput
+    this.nbOutput = nbOutput
     this.showLogs = showLogs
-    this.currentPopulation = [...Array(this.populationSize)].map(genome => new Genome())
+    this.currentPopulation = [...Array(this.populationSize)].map(genome => new Genome(nbInput, nbOutput))
     this.species = []
   }
 
@@ -29,9 +33,6 @@ class Population {
     for (const genome of this.currentPopulation)
       genome.calculateFitness(fitnessFunction)
     this.currentPopulation.sort((geneA, geneB) => geneB.fitness - geneA.fitness)
-    // if (this.generation % 10 === 0 && this.showLogs) {
-    //   console.log(`  ${this.currentPopulation[0].dna()} (${this.currentPopulation[0].fitness})`)
-    //}
   }
 
   /**
@@ -80,14 +81,15 @@ class Population {
    */
   repopulate() {
     const nbToGenerate = this.populationSize - this.currentPopulation.length
-    const newGenomes = Array(nbToGenerate).fill('').map(genome => new Genome())
+    const newGenomes = Array(nbToGenerate).fill('').map(genome => new Genome(this.nbInput, this.nbOutput))
     this.currentPopulation = [...this.currentPopulation, ...newGenomes]
   }
 
   /**
    * Evolves the population via different steps:
    * selection, crossover, mutation
-   * @param {number} iterations     Number of iterations
+   * @param {number}   iterations       Number of iterations
+   * @param {Function} FitnessFunction  Fitness function used for evaluation
    */
   evolve(iterations=1000, fitnessFunction) {
     const startGeneration = this.generation
