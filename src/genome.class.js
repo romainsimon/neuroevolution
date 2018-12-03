@@ -180,12 +180,13 @@ class Genome {
    * Mutates genome by structural or non-structural mutation
    *  - Add a new node
    *  - Add a new connection
-   *  - Change weight of a connection (@TODO)
+   *  - Change weight of a connection
    */
   mutate() {
     const mutations = [
       'addConnection',
-      'addNode'
+      'addNode',
+      'updateConnectionWeight'
     ]
     this[getRandomItem(mutations)]()
   }
@@ -215,6 +216,15 @@ class Genome {
     this.connections.push(new Connection(this.innovation.generate(), randomConnection.inputNode, newNode.innovationNumber, 1))
     this.connections.push(new Connection(this.innovation.generate(), newNode.innovationNumber, randomConnection.outputNode, randomConnection.weight))
     randomConnection.disable()
+  }
+
+  /**
+   * Mutates genome by updating connection weight
+   */
+  updateConnectionWeight() {
+    if (!this.connections.length)
+      return false
+    this.connections[Math.floor(Math.random() * this.connections.length)].weight = Math.random()
   }
 
   /**

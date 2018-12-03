@@ -146,7 +146,7 @@ describe('Genome', () => {
   })
 
   describe('mutate', () => {
-    it('should either add node or connection', () => {
+    it('should either add node, connection or weight', () => {
       const genome = new Genome(1, 2)
       genome.addConnection()
       genome.mutate()
