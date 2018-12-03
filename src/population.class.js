@@ -1,6 +1,7 @@
 'use strict'
 
 const { Genome } = require('./genome.class')
+const { getRandomItem } = require('../utils/selection')
 
 /**
  * Population is of group of genomes
@@ -21,11 +22,32 @@ class Population {
     this.nbOutput = nbOutput
     this.showLogs = showLogs
     this.currentPopulation = [...Array(this.populationSize)].map(genome => new Genome(nbInput, nbOutput))
-    this.species = []
+    this.species = [ this.currentPopulation ]
   }
 
   /**
-   * Evalutate the fitness of entire population according to fitness function
+   * Speciation creates and ordered list of species
+   * Two genomes are considered as from the same species
+   * if their distance is below the distance threshold
+   * @param {number}   threshold     Threshold distance
+   */
+  speciate(threshold=1) {
+    const speciesRepresentation = this.species.map(s => getRandomItem(s))
+    this.species = new Array(speciesRepresentation.length).fill([])
+    for (const g of this.currentPopulation) {
+      for (const i in speciesRepresentation) {
+        if (g.distance(speciesRepresentation[i]) <= threshold) {
+          this.species[i].push(g)
+          break
+        }
+        if (speciesRepresentation.length - i === 1)
+          this.species.push([g])
+      }
+    }
+  }
+
+  /**
+   * Evaluate the fitness of entire population according to fitness function
    * Sorts the population from highest fitness score to lowest
    * @param {Function} fitnessFunction Fitness function used to score genomes
    */
@@ -56,11 +78,9 @@ class Population {
    * Mutates children and adds them to population
    * This uses explicit fitness sharing to adjust the fitness
    * according to species
-   * @param {number}   distanceThreshold     Threshold that defines the distance
-   *                                         below two genomes are considered part
-   *                                         of the same species
+
    */
-  reproduce(distanceThreshold=1) {
+  reproduce() {
     const children = []
     for (let i=0; i<this.currentPopulation.length; i++) {
       for (let j=i+1; j<this.currentPopulation.length; j++) {
@@ -102,7 +122,7 @@ class Population {
       this.reproduce()
     }
     if (this.showLogs)
-      console.log(`=> Fitest genome: ${this.currentPopulation[0].dna()} (${this.currentPopulation[0].fitness})`)
+      console.log(`=> Fittest genome: ${this.currentPopulation[0].dna()} (${this.currentPopulation[0].fitness})`)
     return this.currentPopulation[0]
   }
 }

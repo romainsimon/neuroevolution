@@ -138,6 +138,8 @@ describe('Genome', () => {
       const distance1 = genomeA.distance(genomeB)
       genomeB.mutate()
       genomeB.mutate()
+      genomeB.mutate()
+      genomeB.mutate()
       const distance2 = genomeA.distance(genomeB)
       expect(distance2).to.be.above(distance1)
     })

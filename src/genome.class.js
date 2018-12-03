@@ -126,7 +126,7 @@ class Genome {
       c++
     }
 
-    const avgWeightDiff = weightDiff / nbMatching
+    const avgWeightDiff = weightDiff / nbMatching || 1
     const distance = weights.excess*nbExcess/N
       + weights.disjoint*nbDisjoint/N
       + weights.weight*avgWeightDiff

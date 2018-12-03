@@ -26,6 +26,28 @@ describe('Population', () => {
     })
   })
 
+  describe('speciate', () => {
+
+    it('should create an initial species with all population', () => {
+      const population = new Population(20, 3, 4)
+      expect(population.species).to.have.lengthOf(1)
+      expect(population.species[0]).to.have.lengthOf(20)
+    })
+
+    it('should group similar genomes into the same species', () => {
+      const population = new Population(20, 3, 4)
+      population.speciate(2)
+      expect(population.species).to.have.lengthOf(1)
+      expect(population.species[0]).to.have.lengthOf(20)
+    })
+
+    it('should create new species when threshold is too high', () => {
+      const population = new Population(20, 3, 4)
+      population.speciate(1)
+      expect(population.species).to.have.lengthOf(20)
+    })
+  })
+
   describe('evaluate', () => {
 
     it('should calculate fitness score for all genomes', () => {
