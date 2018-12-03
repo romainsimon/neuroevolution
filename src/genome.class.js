@@ -184,10 +184,10 @@ class Genome {
    */
   mutate() {
     const mutations = [
-      this.addConnection,
-      this.addNode
+      'addConnection',
+      'addNode'
     ]
-    const applyMutation = () => getRandomItem(mutations)()
+    this[getRandomItem(mutations)]()
   }
 
   /**
