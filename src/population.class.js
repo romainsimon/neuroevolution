@@ -66,7 +66,7 @@ class Population {
    */
   select(survivalRate=.2) {
 
-    // @TODO : Add speciation in selection using distance
+    this.speciate()
 
     const nbSelected = Math.ceil(this.populationSize * survivalRate)
     const newPopulation = []

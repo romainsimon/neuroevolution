@@ -96,7 +96,7 @@ class Genome {
    * @return {number}         Distance between two genomes
    */
   distance(genomeB) {
-    const weights = { excess: 1, disjoint: 1, weight: 1 }
+    const weights = { excess: 1, disjoint: 1, weight: .4 }
     const totalGenes = Math.max(this.connections.length, genomeB.connections.length)
     const N = totalGenes > 20 ? totalGenes : 1
 
@@ -181,10 +181,13 @@ class Genome {
    *  - Add a new node
    *  - Add a new connection
    *  - Change weight of a connection (@TODO)
-   * @param {number} nodeChance Chance of the mutation being a new node
    */
-  mutate(nodeChance=.5) {
-    Math.random() <= nodeChance && this.connections ? this.addConnection() : this.addNode()
+  mutate() {
+    const mutations = [
+      this.addConnection,
+      this.addNode
+    ]
+    const applyMutation = () => getRandomItem(mutations)()
   }
 
   /**
