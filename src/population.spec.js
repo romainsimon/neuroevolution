@@ -43,7 +43,7 @@ describe('Population', () => {
 
     it('should create new species when threshold is too high', () => {
       const population = new Population(20, 3, 4)
-      population.speciate(1)
+      population.speciate(.5)
       expect(population.species).to.have.lengthOf(20)
     })
   })

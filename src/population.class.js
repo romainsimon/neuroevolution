@@ -44,6 +44,8 @@ class Population {
           this.species.push([g])
       }
     }
+    this.species = this.species.filter(s => s.length > 0)
+    return this.species
   }
 
   /**
