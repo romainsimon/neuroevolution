@@ -4,12 +4,11 @@ const tf = require('@tensorflow/tfjs')
 
 /**
  * Neural Network
- *
+ * @TODO This does not reflect the structure from genome yet
  */
-class NeuralNetwork {
+class Network {
   /**
    * Create a new Neural Network
-   *
    * @param {number} nbInput      Number of input neurons
    * @param {number} nbHidden     Number of hidden neurons
    * @param {number} nbOutput     Number of output neurons
@@ -24,8 +23,7 @@ class NeuralNetwork {
 
   /**
    * Predict outut from input
-   *
-   * @param {Array} input      One hot encoded input
+   * @param  {Array} input     One hot encoded input
    * @return {Array} output    One hot encoded output
    */
   predict(input) {
@@ -41,15 +39,14 @@ class NeuralNetwork {
 
   /**
    * Create a clone a this neural network
-   *
-   * @return {NeuralNetwork} clonie
+   * @return {NeuralNetwork} cloned neural network
    */
   clone() {
-    let clonie = new NeuralNetwork(this.nbInput, this.nbHidden, this.nbOutput)
-    clonie.dispose()
-    clonie.inputWeights = tf.clone(this.inputWeights)
-    clonie.outputWeights = tf.clone(this.outputWeights)
-    return clonie
+    let clone = new Network(this.nbInput, this.nbHidden, this.nbOutput)
+    clone.dispose()
+    clone.inputWeights = tf.clone(this.inputWeights)
+    clone.outputWeights = tf.clone(this.outputWeights)
+    return clone
   }
 
   /**
@@ -61,4 +58,4 @@ class NeuralNetwork {
   }
 }
 
-module.exports = { NeuralNetwork }
+module.exports = { Network }

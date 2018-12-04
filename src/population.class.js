@@ -1,52 +1,73 @@
 'use strict'
 
-const { Chromosome } = require('./chromosome.class')
-const { stringDiff } = require('./fitness')
+const { Genome } = require('./genome.class')
+const { getRandomItem } = require('../utils/selection')
 
 /**
- * Population is of group of chromosomes
- *
+ * Population is of group of genomes
  */
 class Population {
 
   /**
-   * Create a new population of chromosomes
-   *
-   * @param {number} populationSize     Total size of the chromosomes population
-   * @param {number} chromosomeLength   Number of genes in a chromosome
-   * @param {Array}  genesPool          Possible genes for a chromosome
+   * Create a new population of genomes
+   * @param {Number}  populationSize  Total size of the genomes population
+   * @param {number}  nbInput         Number of input nodes
+   * @param {number}  nbOutput        Number of output node
+   * @param {Boolean} showLogs        Will display logs if true
    */
-  constructor(populationSize=10, chromosomeLength=20, genesPool=[0,1]) {
-    this.generation = 0
+  constructor(populationSize=10, nbInput=1, nbOutput=1, showLogs=false) {
+    this.generation = 1
     this.populationSize = populationSize
-    this.chromosomeLength = chromosomeLength
-    this.genesPool = genesPool
-    this.currentPopulation = [...Array(this.populationSize)]
-      .map(chromosome => new Chromosome(chromosomeLength, genesPool))
+    this.nbInput = nbInput
+    this.nbOutput = nbOutput
+    this.showLogs = showLogs
+    this.currentPopulation = [...Array(this.populationSize)].map(genome => new Genome(nbInput, nbOutput))
+    this.species = [ this.currentPopulation ]
   }
 
   /**
-   * Evalutate the fitness of entire population according to fitness function
-   * Sorts the population from highest fitness score to lowest
-   *
-   * @param {Function} fitnessFunction     Fitness function used to score chromosomes
+   * Speciation creates and ordered list of species
+   * Two genomes are considered as from the same species
+   * if their distance is below the distance threshold
+   * @param {number}   threshold     Threshold distance
    */
-  evaluate(fitnessFunction=stringDiff) {
-    for (const chromosome of this.currentPopulation)
-      chromosome.calculateFitness(fitnessFunction)
-    this.currentPopulation.sort((chA,chB) => chB.fitness - chA.fitness)
-    if (this.generation % 100 === 0) {
-      console.log(`  ${this.currentPopulation[0].dna} (${this.currentPopulation[0].fitness})`)
+  speciate(threshold=1) {
+    const speciesRepresentation = this.species.map(s => getRandomItem(s))
+    this.species = new Array(speciesRepresentation.length).fill([])
+    for (const g of this.currentPopulation) {
+      for (const i in speciesRepresentation) {
+        if (g.distance(speciesRepresentation[i]) <= threshold) {
+          this.species[i].push(g)
+          break
+        }
+        if (speciesRepresentation.length - i === 1)
+          this.species.push([g])
+      }
     }
+    this.species = this.species.filter(s => s.length > 0)
+    return this.species
   }
 
   /**
-   * Select the best chromosomes in the population according to survival rate
-   * Kill all other chromosomes (sorry guys)
-   *
-   * @param {number}   survivalRate     Percent of population that survives [0-1]
+   * Evaluate the fitness of entire population according to fitness function
+   * Sorts the population from highest fitness score to lowest
+   * @param {Function} fitnessFunction Fitness function used to score genomes
+   */
+  evaluate(fitnessFunction) {
+    for (const genome of this.currentPopulation)
+      genome.calculateFitness(fitnessFunction)
+    this.currentPopulation.sort((geneA, geneB) => geneB.fitness - geneA.fitness)
+  }
+
+  /**
+   * Select the best genomes in the population according to survival rate
+   * Kills all other genomes (sorry guys)
+   * @param {number} survivalRate  Percent of population that survives [0-1]
    */
   select(survivalRate=.2) {
+
+    this.speciate()
+
     const nbSelected = Math.ceil(this.populationSize * survivalRate)
     const newPopulation = []
     for (const i in this.currentPopulation)
@@ -55,10 +76,11 @@ class Population {
   }
 
   /**
-   * Reproduce existing chromosomes in population via crossover
+   * Reproduce existing genomes in population via crossover
    * Mutates children and adds them to population
-   *
-   * @param {number}   survivalRate     Percent of population that survives [0-1]
+   * This uses explicit fitness sharing to adjust the fitness
+   * according to species
+
    */
   reproduce() {
     const children = []
@@ -76,33 +98,35 @@ class Population {
   }
 
   /**
-   * Create new random chromosomes to match the max population size
+   * Create new random genomes to match the max population size
    * It does not do crossover or mutation, but simply repopulates
-   *
    */
   repopulate() {
     const nbToGenerate = this.populationSize - this.currentPopulation.length
-    const newChromosomes = Array(nbToGenerate).fill('').map(ch => new Chromosome().dna)
-    this.currentPopulation = [...this.currentPopulation, ...newChromosomes]
+    const newGenomes = Array(nbToGenerate).fill('').map(genome => new Genome(this.nbInput, this.nbOutput))
+    this.currentPopulation = [...this.currentPopulation, ...newGenomes]
   }
 
   /**
    * Evolves the population via different steps:
    * selection, crossover, mutation
-   *
-   * @param {number} iterations     Number of iterations
+   * @param {number}   iterations       Number of iterations
+   * @param {Function} FitnessFunction  Fitness function used for evaluation
    */
-  evolve(iterations=1000, fitnessFunction=stringDiff) {
-    while (this.generation<iterations) {
-      if (this.generation % 100 === 0) console.log(`- Generation ${this.generation}`)
+  evolve(iterations=1000, fitnessFunction) {
+    const startGeneration = this.generation
+    const maxGen = startGeneration + iterations - 1
+    while (this.generation <= maxGen) {
+      if (this.showLogs)
+        process.stdout.write(`- Generation ${this.generation}/${maxGen}${this.generation === maxGen ?  '\n' : '\r'}`)
       this.evaluate(fitnessFunction)
       this.select()
       this.reproduce()
     }
-    console.log(`===> Best Chromosome: ${this.currentPopulation[0].dna}`)
+    if (this.showLogs)
+      console.log(`=> Fittest genome: ${this.currentPopulation[0].dna()} (${this.currentPopulation[0].fitness})`)
     return this.currentPopulation[0]
   }
 }
-
 
 module.exports = { Population }

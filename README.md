@@ -1,7 +1,7 @@
-<h1 align="center">Neuroevolution</h1>
+<h1 align="center">NeuroEvolution of Augmenting Topologies (NEAT)</h1>
 
 <div align="center">
-  Evolving a population of Neural Networks using Tensorflow.js and Genetic Algorithm in ES6
+  :hatching_chick:Evolving a population of Neural Networks using Tensorflow.js and Genetic Algorithm in ES6. This is an implementation of <a href="http://nn.cs.utexas.edu/downloads/papers/stanley.ec02.pdf">NEAT</a> (Neuro Evolution of Augmenting topologies)
 </div>
 
 <br />
@@ -25,3 +25,5 @@
 `npm install neuroevolution`
 
 ## Usage
+
+work in progress :)

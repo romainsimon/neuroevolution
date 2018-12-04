@@ -1,7 +1,7 @@
 {
   "name": "neuroevolution",
   "version": "0.1.0",
-  "description": "Neuroevolution: evolving neural networks using tensorflow.js and genetic algorithm",
+  "description": "NeuroEvolution of Augmenting Topologies (NEAT) implementation with Tensorflow.js",
   "main": "index.js",
   "scripts": {
     "test": "nyc --reporter=html --reporter=text mocha \"./{,!(node_modules)/**/}*.spec.js\"",
@@ -10,6 +10,7 @@
   "author": "Romain Simon <contact@romainsimon.net>",
   "license": "MIT",
   "keywords": [
+    "neat",
     "neuroevolution",
     "tensorflow",
     "genetic",
