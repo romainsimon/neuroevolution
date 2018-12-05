@@ -11,7 +11,6 @@ const { getRandomItem } = require('../utils/selection')
  * It can be mutated or combined with another genome (crossover)
  */
 class Genome {
-
   /**
    * Create a new Genome
    * @param {number}    nbInput      Number of input nodes
@@ -19,14 +18,12 @@ class Genome {
    * @param {Object[]}  nodes        Array of existing nodes
    * @param {Object[]}  connections  Array of existing connections
    */
-  constructor(nbInput=1, nbOutput=1, nodes, connections) {
+  constructor (nbInput = 1, nbOutput = 1, nodes, connections) {
     this.innovation = new Innovation()
     this.nodes = nodes || []
     if (!nodes) {
-      for (let i=0; i<nbInput; ++i)
-        this.nodes.push(new Node(this.innovation.generate(), 'input'))
-      for (let o=0; o<nbOutput; ++o)
-        this.nodes.push(new Node(this.innovation.generate(), 'output'))
+      for (let i = 0; i < nbInput; ++i) this.nodes.push(new Node(this.innovation.generate(), 'input'))
+      for (let o = 0; o < nbOutput; ++o) this.nodes.push(new Node(this.innovation.generate(), 'output'))
     }
     this.connections = connections || []
     this.nbInput = nbInput
@@ -38,9 +35,9 @@ class Genome {
    * Shows a text representation of DNA/connections
    * @return {string} DNA respresenting all connections
    */
-  dna() {
+  dna () {
     return this.connections
-      .map(c => `${c.innovationNumber}[${c.inputNode}${c.disabled?'X':'>'}${c.outputNode}]`)
+      .map(c => `${c.innovationNumber}[${c.inputNode}${c.disabled ? 'X' : '>'}${c.outputNode}]`)
       .join()
   }
 
@@ -48,7 +45,7 @@ class Genome {
    * Get a node by its innovation number
    * @param {number} number Innovation number
    */
-  getNode(number) {
+  getNode (number) {
     const node = this.nodes.filter(n => n.innovationNumber === number)
     return node.length ? node[0] : null
   }
@@ -57,7 +54,7 @@ class Genome {
    * Get a connection by its innovation number
    * @param {number} number Innovation number
    */
-  getConnection(number) {
+  getConnection (number) {
     const connection = this.connections.filter(c => c.innovationNumber === number)
     return connection.length ? connection[0] : null
   }
@@ -66,16 +63,16 @@ class Genome {
    * Lists all possible new connections
    * @return {Array} possibleConnections  An array of possible new connections that can be created
    */
-  possibleNewConnections() {
+  possibleNewConnections () {
     const existingConnections = this.connections
       .filter(conn => !conn.disabled)
-      .map(conn => conn.inputNode+'>'+conn.outputNode)
+      .map(conn => conn.inputNode + '>' + conn.outputNode)
 
     const possibleConnections = this.nodes.reduce((acc, input, i) =>
-      acc.concat(this.nodes.slice(i+1).map(output => [input.innovationNumber, output.innovationNumber] )),
-    []).filter(gene => !existingConnections.includes(gene[0]+'>'+gene[1])
-      && !(gene[0].type === 'input' && gene[1].type === 'input')
-      && !(gene[0].type === 'output' && gene[1].type === 'output'))
+      acc.concat(this.nodes.slice(i + 1).map(output => [input.innovationNumber, output.innovationNumber])),
+    []).filter(gene => !existingConnections.includes(gene[0] + '>' + gene[1]) &&
+      !(gene[0].type === 'input' && gene[1].type === 'input') &&
+      !(gene[0].type === 'output' && gene[1].type === 'output'))
 
     return possibleConnections
   }
@@ -85,7 +82,7 @@ class Genome {
    * @param  {Function} fitFunction Fitness function used to score genomes
    * @return {number}               Fitness score
    */
-  calculateFitness(fitFunction) {
+  calculateFitness (fitFunction) {
     this.fitness = fitFunction(this)
     return this.fitness
   }
@@ -95,8 +92,8 @@ class Genome {
    * @param  {Genome} genomeB Another genome
    * @return {number}         Distance between two genomes
    */
-  distance(genomeB) {
-    const weights = { excess: 1, disjoint: 1, weight: .4 }
+  distance (genomeB) {
+    const weights = { excess: 1, disjoint: 1, weight: 0.4 }
     const totalGenes = Math.max(this.connections.length, genomeB.connections.length)
     const N = totalGenes > 20 ? totalGenes : 1
 
@@ -127,9 +124,9 @@ class Genome {
     }
 
     const avgWeightDiff = weightDiff / nbMatching || 1
-    const distance = weights.excess*nbExcess/N
-      + weights.disjoint*nbDisjoint/N
-      + weights.weight*avgWeightDiff
+    const distance = weights.excess * nbExcess / N +
+      weights.disjoint * nbDisjoint / N +
+      weights.weight * avgWeightDiff
 
     return distance
   }
@@ -142,7 +139,7 @@ class Genome {
    * @param  {Genome} genomeB Another genome
    * @return {Genome}         Child genome
    */
-  crossover(genomeB) {
+  crossover (genomeB) {
     const childNodes = []
     const childConnections = []
     let n = 1
@@ -150,27 +147,13 @@ class Genome {
     while (n <= this.innovation.getLast()) {
       const aNode = this.getNode(n)
       const bNode = genomeB.getNode(n)
-      if (aNode && bNode)
-        childNodes.push(Math.random() > .5 ? aNode : bNode)
-      else if (aNode && this.fitness > genomeB.fitness)
-        childNodes.push(aNode)
-      else if (bNode && this.fitness < genomeB.fitness)
-        childNodes.push(bNode)
-      else if (aNode && bNode)
-        childNodes.push(aNode || bNode)
+      if (aNode && bNode) { childNodes.push(Math.random() > 0.5 ? aNode : bNode) } else if (aNode && this.fitness > genomeB.fitness) { childNodes.push(aNode) } else if (bNode && this.fitness < genomeB.fitness) { childNodes.push(bNode) } else if (aNode && bNode) { childNodes.push(aNode || bNode) }
       n++
     }
     while (c <= this.innovation.getLast()) {
       const aConn = this.getConnection(c)
       const bConn = genomeB.getConnection(c)
-      if (aConn && bConn)
-        childConnections.push(Math.random() > .5 ? aConn : bConn)
-      else if (aConn && this.fitness > genomeB.fitness)
-        childConnections.push(aConn)
-      else if (bConn && this.fitness < genomeB.fitness)
-        childConnections.push(bConn)
-      else if (aConn && bConn)
-        childConnections.push(aConn || bConn)
+      if (aConn && bConn) { childConnections.push(Math.random() > 0.5 ? aConn : bConn) } else if (aConn && this.fitness > genomeB.fitness) { childConnections.push(aConn) } else if (bConn && this.fitness < genomeB.fitness) { childConnections.push(bConn) } else if (aConn && bConn) { childConnections.push(aConn || bConn) }
       c++
     }
     return new Genome(null, null, childNodes, childConnections)
@@ -182,7 +165,7 @@ class Genome {
    *  - Add a new connection
    *  - Change weight of a connection
    */
-  mutate() {
+  mutate () {
     const mutations = [
       'addConnection',
       'addNode',
@@ -194,10 +177,9 @@ class Genome {
   /**
    * Mutates genome by adding a new connection
    */
-  addConnection() {
+  addConnection () {
     const randomConnection = getRandomItem(this.possibleNewConnections())
-    if (!randomConnection)
-      return false
+    if (!randomConnection) { return false }
     const newConnection = new Connection(this.innovation.generate(), randomConnection[0], randomConnection[1])
     this.connections.push(newConnection)
   }
@@ -207,10 +189,9 @@ class Genome {
    * The connection gene being split is disabled, and two new connection genes are created.
    * The new node is between the two new connections.
    */
-  addNode() {
+  addNode () {
     const randomConnection = getRandomItem(this.connections.filter(gene => !gene.disabled))
-    if (!randomConnection)
-      return false
+    if (!randomConnection) { return false }
     const newNode = new Node(this.innovation.generate(), 'hidden')
     this.nodes.push(newNode)
     this.connections.push(new Connection(this.innovation.generate(), randomConnection.inputNode, newNode.innovationNumber, 1))
@@ -221,9 +202,8 @@ class Genome {
   /**
    * Mutates genome by updating connection weight
    */
-  updateConnectionWeight() {
-    if (!this.connections.length)
-      return false
+  updateConnectionWeight () {
+    if (!this.connections.length) { return false }
     this.connections[Math.floor(Math.random() * this.connections.length)].weight = Math.random()
   }
 
@@ -231,7 +211,7 @@ class Genome {
    * Generates the corresponding Neural Network
    * @TODO
    */
-  generateNetwork() {
+  generateNetwork () {
     const nbHidden = this.nodes.filter(node => node.type === 'hidden').length
     const network = new Network(this.nbInput, nbHidden, this.nbOutput)
     return network

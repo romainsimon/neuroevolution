@@ -4,20 +4,17 @@ const { expect } = require('chai')
 const { Network } = require('./network.class')
 
 describe('Neural Network', () => {
-
   describe('creation', () => {
-
     it('should create a new Neural Network with all properties', () => {
-      const ann = new Network(1,6,3)
+      const ann = new Network(1, 6, 3)
       expect(ann).to.be.an('object')
       expect(ann).to.have.all.keys('nbInput', 'nbHidden', 'nbOutput', 'inputWeights', 'outputWeights')
     })
   })
 
   describe('creation', () => {
-
     it('should predict an output from input', () => {
-      const ann = new Network(1,1,2)
+      const ann = new Network(1, 1, 2)
       const input = [Math.random()]
       const output = ann.predict(input)
       expect(output).to.be.have.lengthOf(2)
@@ -26,9 +23,8 @@ describe('Neural Network', () => {
   })
 
   describe('clone', () => {
-
     it('should clone neural network', () => {
-      const ann1 = new Network(3,4,5)
+      const ann1 = new Network(3, 4, 5)
       const ann2 = ann1.clone()
       expect(ann2).to.be.an('object')
       expect(ann2).to.have.all.keys('nbInput', 'nbHidden', 'nbOutput', 'inputWeights', 'outputWeights')
@@ -39,9 +35,8 @@ describe('Neural Network', () => {
   })
 
   describe('dispose', () => {
-
     it('should dispose input and output weights', () => {
-      const ann = new Network(3,4,5)
+      const ann = new Network(3, 4, 5)
       expect(ann.inputWeights.isDisposedInternal).to.equal(false)
       expect(ann.outputWeights.isDisposedInternal).to.equal(false)
       ann.dispose()
@@ -51,6 +46,4 @@ describe('Neural Network', () => {
       expect(ann.outputWeights.isDisposedInternal).to.equal(true)
     })
   })
-
-
 })

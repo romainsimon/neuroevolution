@@ -7,13 +7,12 @@ const { Connection } = require('./connection.class')
 const { Innovation } = require('./innovation.class')
 
 describe('Genome', () => {
-
   describe('creation', () => {
     it('should create a new Genome with all properties', () => {
       const genome = new Genome(2, 3)
       expect(genome).to.be.an('object')
       expect(genome).to.have.all.keys('nodes', 'innovation', 'connections', 'nbInput', 'nbOutput', 'fitness')
-      expect(genome.nodes).to.have.lengthOf(2+3)
+      expect(genome.nodes).to.have.lengthOf(2 + 3)
     })
     it('should create a new Genome with increasing innovation numbers in initial nodes', () => {
       const genome = new Genome(2, 3)
@@ -186,9 +185,9 @@ describe('Genome', () => {
       const genome2 = genome1
       genome2.addConnection()
       genome2.addConnection()
-      const smallFitness = () => .4
+      const smallFitness = () => 0.4
       genome1.calculateFitness(smallFitness)
-      const betterFitness = () => .8
+      const betterFitness = () => 0.8
       genome2.calculateFitness(betterFitness)
       const children = genome1.crossover(genome2)
       expect(children.nodes).to.have.lengthOf(3)
@@ -204,5 +203,4 @@ describe('Genome', () => {
       // @TODO
     })
   })
-
 })

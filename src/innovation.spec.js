@@ -4,7 +4,6 @@ const { expect } = require('chai')
 const { Innovation } = require('./innovation.class')
 
 describe('Innovation', () => {
-
   describe('generate', () => {
     it('should get an increasing innovation number', () => {
       const innovation = new Innovation()
@@ -17,7 +16,7 @@ describe('Innovation', () => {
   describe('reset', () => {
     it('should reset innovation number generator', () => {
       const innovation = new Innovation()
-      const innovation1 = innovation.generate()
+      innovation.generate()
       innovation.reset()
       const innovation2 = innovation.generate()
       expect(innovation2).to.be.equal(1)
@@ -34,5 +33,4 @@ describe('Innovation', () => {
       expect(last).to.be.equal(2)
     })
   })
-
 })

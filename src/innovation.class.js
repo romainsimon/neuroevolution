@@ -7,12 +7,11 @@ let globalInnovationNumber = 0
  * This allows historical markings of node/connection genes
  */
 class Innovation {
-
   /**
    * Create a new Innovation Generator
    * @return {number} globalInnovationNumber   Innovation number
    */
-  constructor() {
+  constructor () {
     return globalInnovationNumber
   }
 
@@ -20,7 +19,7 @@ class Innovation {
    * Returns the last innovation number
    * @return {number} number     last innovation number
    */
-  getLast() {
+  getLast () {
     return globalInnovationNumber
   }
 
@@ -28,7 +27,7 @@ class Innovation {
    * Generates an increasing innovation number
    * @return {number} number     last innovation number
    */
-  generate() {
+  generate () {
     globalInnovationNumber++
     return globalInnovationNumber
   }
@@ -36,7 +35,7 @@ class Innovation {
   /**
    * Reset innovation number to zero
    */
-  reset() {
+  reset () {
     globalInnovationNumber = 0
   }
 }

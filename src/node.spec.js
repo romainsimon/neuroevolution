@@ -4,7 +4,6 @@ const { expect } = require('chai')
 const { Node } = require('./node.class')
 
 describe('Node gene', () => {
-
   describe('creation', () => {
     it('should create a new Node Gene with all properties', () => {
       const gene = new Node(42, 'input')
@@ -24,5 +23,4 @@ describe('Node gene', () => {
       expect(gene.type).to.equal('hidden')
     })
   })
-
 })

@@ -4,7 +4,6 @@ const { expect } = require('chai')
 const { Connection } = require('./connection.class')
 
 describe('Connection gene', () => {
-
   describe('creation', () => {
     it('should create a new Connection Gene with all properties', () => {
       const gene = new Connection(32, 4, 5)
@@ -42,5 +41,4 @@ describe('Connection gene', () => {
       expect(gene.disabled).to.equal(true)
     })
   })
-
 })

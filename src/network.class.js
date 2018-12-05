@@ -13,7 +13,7 @@ class Network {
    * @param {number} nbHidden     Number of hidden neurons
    * @param {number} nbOutput     Number of output neurons
    */
-  constructor(nbInput, nbHidden, nbOutput) {
+  constructor (nbInput, nbHidden, nbOutput) {
     this.nbInput = nbInput
     this.nbHidden = nbHidden
     this.nbOutput = nbOutput
@@ -26,7 +26,7 @@ class Network {
    * @param  {Array} input     One hot encoded input
    * @return {Array} output    One hot encoded output
    */
-  predict(input) {
+  predict (input) {
     let output
     tf.tidy(() => {
       let inputLayer = tf.tensor(input, [1, this.nbInput])
@@ -41,7 +41,7 @@ class Network {
    * Create a clone a this neural network
    * @return {NeuralNetwork} cloned neural network
    */
-  clone() {
+  clone () {
     let clone = new Network(this.nbInput, this.nbHidden, this.nbOutput)
     clone.dispose()
     clone.inputWeights = tf.clone(this.inputWeights)
@@ -52,7 +52,7 @@ class Network {
   /**
    * Dispose memory
    */
-  dispose() {
+  dispose () {
     this.inputWeights.dispose()
     this.outputWeights.dispose()
   }
