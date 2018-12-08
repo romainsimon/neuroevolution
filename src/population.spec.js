@@ -33,14 +33,14 @@ describe('Population', () => {
 
     it('should group similar genomes into the same species', () => {
       const population = new Population(20, 3, 4)
-      population.speciate(2)
+      population.speciate()
       expect(population.species).to.have.lengthOf(1)
       expect(population.species[0]).to.have.lengthOf(20)
     })
 
     it('should create new species when threshold is too low', () => {
       const population = new Population(20, 3, 4)
-      population.speciate(0.2)
+      population.speciate(0)
       expect(population.species).to.have.lengthOf(20)
     })
   })
