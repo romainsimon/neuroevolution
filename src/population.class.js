@@ -53,7 +53,7 @@ class Population {
    */
   evaluate (fitnessFunction) {
     for (const genome of this.currentPopulation) genome.calculateFitness(fitnessFunction)
-    this.currentPopulation.sort((geneA, geneB) => geneB.fitness - geneA.fitness)
+    this.currentPopulation.sort((genomeA, genomeB) => genomeB.fitness - genomeA.fitness)
   }
 
   /**
@@ -87,6 +87,7 @@ class Population {
         children.push(child)
       }
     }
+    // console.log(this.currentPopulation.length)
     this.generation++
     this.currentPopulation = [...this.currentPopulation, ...children]
   }
@@ -110,13 +111,23 @@ class Population {
   evolve (iterations = 1000, fitnessFunction) {
     const startGeneration = this.generation
     const maxGen = startGeneration + iterations - 1
+    const terminalWidth = process.stdout.columns - 30
     while (this.generation <= maxGen) {
-      if (this.showLogs) process.stdout.write(`- Generation ${this.generation}/${maxGen}${this.generation === maxGen ? '\n' : '\r'}`)
+      if (this.showLogs) {
+        let progress = ''
+        for (let p=0; p<terminalWidth; ++p) progress += (p>=Math.round(this.generation/maxGen*terminalWidth)) ? '░' : '█'
+        process.stdout.write(`Generation ${this.generation}/${maxGen} ${progress} ${Math.round(this.generation/maxGen*100)}% ${this.generation === maxGen ? '\n' : '\r'}`)
+      }
       this.evaluate(fitnessFunction)
       this.select()
       this.reproduce()
     }
-    if (this.showLogs) console.log(`=> Fittest genome: ${this.currentPopulation[0].dna()} (${this.currentPopulation[0].fitness})`)
+    if (this.showLogs) {
+      console.log(` - Fittest genome: ${this.currentPopulation[0].dna()}`)
+      console.log(` - Species: ${this.species.length}`)
+      console.log(` - Population: ${this.currentPopulation.length}`)
+      console.log(` - Max fitness: ${this.currentPopulation[0].fitness}`)
+    }
     return this.currentPopulation[0]
   }
 }
