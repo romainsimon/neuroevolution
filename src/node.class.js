@@ -8,13 +8,13 @@ const nodeTypes = ['input', 'hidden', 'output']
 class Node {
   /**
    * Create a new Node gene
-   * @param {number} innovationNumber Innovation number can be set
-   * @param {number} type             Type of node created
+   * @param {number} number  Node number can be set
+   * @param {number} type    Type of node created
    */
-  constructor (innovationNumber, type = 'hidden') {
-    if (!innovationNumber) throw new Error('Node should have an innovation number')
+  constructor (number, type = 'hidden') {
+    if (!number) throw new Error('Node should have a node number')
     if (type && !nodeTypes.includes(type)) throw new Error('Node type is not valid')
-    this.innovationNumber = innovationNumber
+    this.number = number
     this.type = type
   }
 }

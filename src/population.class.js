@@ -4,7 +4,8 @@ const { Genome } = require('./genome.class')
 const { getRandomItem } = require('../utils/selection')
 
 /**
- * Population is of group of genomes
+ * Population contains different genomes that are
+ * grouped into different species according to their distance
  */
 class Population {
   /**
@@ -63,7 +64,7 @@ class Population {
    */
   select (survivalRate = 0.2) {
     this.speciate()
-
+    // @TODO : explicit fitness sharing
     const nbSelected = Math.ceil(this.populationSize * survivalRate)
     const newPopulation = []
     for (const i in this.currentPopulation) if (i < nbSelected) newPopulation.push(this.currentPopulation[i])
@@ -87,7 +88,6 @@ class Population {
         children.push(child)
       }
     }
-    // console.log(this.currentPopulation.length)
     this.generation++
     this.currentPopulation = [...this.currentPopulation, ...children]
   }
@@ -104,7 +104,7 @@ class Population {
 
   /**
    * Evolves the population via different steps:
-   * selection, crossover, mutation
+   *  selection, crossover, mutation
    * @param {number}   iterations       Number of iterations
    * @param {Function} FitnessFunction  Fitness function used for evaluation
    *                                    It has access to the genome context

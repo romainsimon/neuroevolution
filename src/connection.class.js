@@ -5,6 +5,7 @@ const innovation = new Innovation()
 
 /**
  * Connection gene is part of a genome
+ * We keep track of similar connections with an innovation number
  */
 class Connection {
   /**

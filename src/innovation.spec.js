@@ -7,11 +7,11 @@ describe('Innovation', () => {
   describe('getNumber', () => {
     it('should throw an error if from node is not present', () => {
       const innovation = new Innovation()
-      expect(() => innovation.getNumber()).to.throw('You must specify a `from` node number')
+      expect(() => innovation.getNumber()).to.throw('You must specify an input node number')
     })
     it('should throw an error if to node is not present', () => {
       const innovation = new Innovation()
-      expect(() => innovation.getNumber(1)).to.throw('You must specify a `to` node number')
+      expect(() => innovation.getNumber(1)).to.throw('You must specify an output node number')
     })
     it('should get an increasing innovation number for different connections', () => {
       const innovation = new Innovation()

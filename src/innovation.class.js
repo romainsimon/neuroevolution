@@ -20,14 +20,14 @@ class Innovation {
   /**
    * Generates an increasing innovation number
    * or returns the existing innovation number for the connection
-   * @param  {number} from       Reference number of input node
-   * @param  {number} to         Reference number of output node
-   * @return {number} number     Innovation number
+   * @param  {number} inputNode   Reference number of input node
+   * @param  {number} outputNode  Reference number of output node
+   * @return {number} number      Innovation number
    */
-  getNumber (from, to) {
-    if (!from || !Number(from)) throw new Error('You must specify a `from` node number')
-    if (!to || !Number(to)) throw new Error('You must specify a `to` node number')
-    const connection = to > from ? `${from}>${to}` : `${to}>${from}`
+  getNumber (inputNode, outputNode) {
+    if (!inputNode || !Number(inputNode)) throw new Error('You must specify an input node number')
+    if (!outputNode || !Number(outputNode)) throw new Error('You must specify an output node number')
+    const connection = outputNode > inputNode ? `${inputNode}>${outputNode}` : `${outputNode}>${inputNode}`
     if (!innovations[connection]) {
       ++globalInnovationNumber
       innovations[connection] = globalInnovationNumber

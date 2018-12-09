@@ -52,11 +52,11 @@ class Genome {
   }
 
   /**
-   * Get a node by its innovation number
-   * @param {number} number Innovation number
+   * Get a node by its node number
+   * @param {number} number node number
    */
   getNode (number) {
-    const node = this.nodes.filter(n => n.innovationNumber === number)
+    const node = this.nodes.filter(n => n.number === number)
     return node.length ? node[0] : null
   }
 
@@ -79,7 +79,7 @@ class Genome {
       .map(conn => conn.inputNode + '>' + conn.outputNode)
 
     const possibleConnections = this.nodes.reduce((acc, input, i) =>
-      acc.concat(this.nodes.slice(i + 1).map(output => [input.innovationNumber, output.innovationNumber])),
+      acc.concat(this.nodes.slice(i + 1).map(output => [input.number, output.number])),
     []).filter(gene => !existingConnections.includes(gene[0] + '>' + gene[1]) &&
       !(gene[0].type === 'input' && gene[1].type === 'input') &&
       !(gene[0].type === 'output' && gene[1].type === 'output'))
@@ -205,8 +205,8 @@ class Genome {
     if (!randomConnection) { return false }
     const newNode = new Node(++this.nodeCount, 'hidden')
     this.nodes.push(newNode)
-    this.connections.push(new Connection(randomConnection.inputNode, newNode.innovationNumber, 1))
-    this.connections.push(new Connection(newNode.innovationNumber, randomConnection.outputNode, randomConnection.weight))
+    this.connections.push(new Connection(randomConnection.inputNode, newNode.number, 1))
+    this.connections.push(new Connection(newNode.number, randomConnection.outputNode, randomConnection.weight))
     randomConnection.disable()
   }
 

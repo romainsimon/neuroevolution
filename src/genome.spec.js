@@ -17,18 +17,18 @@ describe('Genome', () => {
       expect(genome).to.have.all.keys('nodes', 'connections', 'nbInput', 'nbOutput', 'nodeCount', 'fitness')
       expect(genome.nodes).to.have.lengthOf(2 + 3)
     })
-    it('should create a new Genome with increasing innovation numbers in initial nodes', () => {
+    it('should create a new Genome with increasing node numbers in initial nodes', () => {
       const genome = new Genome(2, 3)
       expect(genome).to.be.an('object')
-      expect(genome.nodes[1].innovationNumber).to.be.above(genome.nodes[0].innovationNumber)
+      expect(genome.nodes[1].number).to.be.above(genome.nodes[0].number)
     })
-    it('should preserve innovation numbers when copying a genome', () => {
+    it('should preserve node numbers when copying a genome', () => {
       const genome1 = new Genome(2, 2)
       genome1.addConnection()
       const genome2 = genome1
-      expect(genome2.nodes[0].innovationNumber).to.equal(genome1.nodes[0].innovationNumber)
-      expect(genome2.nodes[1].innovationNumber).to.equal(genome1.nodes[1].innovationNumber)
-      expect(genome2.connections[0].innovationNumber).to.equal(genome1.connections[0].innovationNumber)
+      expect(genome2.nodes[0].number).to.equal(genome1.nodes[0].number)
+      expect(genome2.nodes[1].number).to.equal(genome1.nodes[1].number)
+      expect(genome2.connections[0].number).to.equal(genome1.connections[0].number)
     })
   })
 
@@ -60,18 +60,18 @@ describe('Genome', () => {
   })
 
   describe('getNode', () => {
-    it('should get a node by its innovation number', () => {
+    it('should get a node by its number', () => {
       const genome = new Genome(1, 2, [
         new Node(1, 'input'),
         new Node(2, 'output')
       ])
       const node1 = genome.getNode(1)
       expect(node1).to.be.an('object')
-      expect(node1.innovationNumber).to.equal(1)
+      expect(node1.number).to.equal(1)
       expect(node1.type).to.equal('input')
       const node2 = genome.getNode(2)
       expect(node2).to.be.an('object')
-      expect(node2.innovationNumber).to.equal(2)
+      expect(node2.number).to.equal(2)
       expect(node2.type).to.equal('output')
       const node32 = genome.getNode(42)
       expect(node32).to.equal(null)
