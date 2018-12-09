@@ -94,7 +94,7 @@ describe('Population', () => {
   describe('evolve', () => {
     it('should evolve population to target generation', () => {
       const dumbFitness = () => Math.random()
-      const population = new Population(10, 1, 1, false)
+      const population = new Population(10, 1, 1)
       population.evolve(20, dumbFitness)
       expect(population.generation).to.equal(21)
       population.evolve(20, dumbFitness)
