@@ -18,11 +18,14 @@ class Genome {
    * @param {Object[]}  connections  Array of existing connections
    */
   constructor (nbInput = 1, nbOutput = 1, nodes, connections) {
-    this.nodes = nodes || []
-    this.nodeCount = 0
     if (!nodes) {
+      this.nodeCount = 0
+      this.nodes = []
       for (let i = 0; i < nbInput; ++i) this.nodes.push(new Node(++this.nodeCount, 'input'))
       for (let o = 0; o < nbOutput; ++o) this.nodes.push(new Node(++this.nodeCount, 'output'))
+    } else {
+      this.nodes = nodes
+      this.nodeCount = nodes.length
     }
     this.connections = connections || []
     this.nbInput = nbInput
@@ -164,7 +167,7 @@ class Genome {
       if (aConn && bConn) { childConnections.push(Math.random() > 0.5 ? aConn : bConn) } else if (aConn && this.fitness > genomeB.fitness) { childConnections.push(aConn) } else if (bConn && this.fitness < genomeB.fitness) { childConnections.push(bConn) } else if (aConn && bConn) { childConnections.push(aConn || bConn) }
       c++
     }
-    return new Genome(null, null, childNodes, childConnections)
+    return new Genome(this.nbInput, this.nbOutput, childNodes, childConnections)
   }
 
   /**

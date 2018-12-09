@@ -14,7 +14,7 @@ class Population {
    * @param {number}  nbOutput        Number of output node
    * @param {Boolean} showLogs        Will display logs if true
    */
-  constructor (populationSize = 10, nbInput = 1, nbOutput = 1, showLogs = false) {
+  constructor (populationSize = 100, nbInput = 1, nbOutput = 1, showLogs = true) {
     this.generation = 1
     this.populationSize = populationSize
     this.nbInput = nbInput
@@ -107,6 +107,7 @@ class Population {
    * selection, crossover, mutation
    * @param {number}   iterations       Number of iterations
    * @param {Function} FitnessFunction  Fitness function used for evaluation
+   *                                    It has access to the genome context
    */
   evolve (iterations = 1000, fitnessFunction) {
     const startGeneration = this.generation
@@ -115,8 +116,8 @@ class Population {
       if (this.showLogs) {
         let terminalWidth = process.stdout.columns / 2
         let progress = ''
-        for (let p=0; p<terminalWidth; ++p) progress += (p>=Math.round((this.generation-startGeneration)/(maxGen-startGeneration)*terminalWidth)) ? '░' : '█'
-        process.stdout.write(` Generation ${this.generation}/${maxGen} ${progress} ${Math.round(this.generation/maxGen*100)}% ${this.generation === maxGen ? '\n' : '\r'}`)
+        for (let p = 0; p < terminalWidth; ++p) progress += (p >= Math.round((this.generation - startGeneration) / (maxGen - startGeneration) * terminalWidth)) ? '░' : '█'
+        process.stdout.write(` Generation ${this.generation}/${maxGen} ${progress} ${Math.round(this.generation / maxGen * 100)}% ${this.generation === maxGen ? '\n' : '\r'}`)
       }
       this.evaluate(fitnessFunction)
       this.select()
