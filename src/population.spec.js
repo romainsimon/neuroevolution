@@ -94,19 +94,19 @@ describe('Population', () => {
   describe('evolve', () => {
     it('should evolve population to target generation', () => {
       const dumbFitness = () => Math.random()
-      const population = new Population(10, 1, 1)
-      population.evolve(20, dumbFitness)
+      const population = new Population(10, 1, 1, false)
+      population.evolve(10, dumbFitness)
+      expect(population.generation).to.equal(11)
+      population.evolve(10, dumbFitness)
       expect(population.generation).to.equal(21)
-      population.evolve(20, dumbFitness)
-      expect(population.generation).to.equal(41)
     })
 
     it('should increase fitness over generations', () => {
       const generationFitness = genome => genome.connections.length
-      const population = new Population(10, 1, 1, false)
+      const population = new Population(10, 1, 1)
       population.evaluate(generationFitness)
       const firstFitness = population.currentPopulation[0].fitness
-      population.evolve(3, generationFitness)
+      population.evolve(10, generationFitness)
       const lastFitness = population.currentPopulation[0].fitness
       expect(lastFitness).to.be.at.least(firstFitness)
     })
