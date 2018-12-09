@@ -25,7 +25,6 @@ const s = {
   20: '⓴'
 }
 
-// This fitness function will make genomes grow larger and larger
 const fitnessFunction = () => Math.random()
 
 const population = new Population(10, 2, 2, false)
