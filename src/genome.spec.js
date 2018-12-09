@@ -6,55 +6,72 @@ const { Node } = require('./node.class')
 const { Connection } = require('./connection.class')
 const { Innovation } = require('./innovation.class')
 
-describe('Genome', () => {
+const innovation = new Innovation()
 
+describe('Genome', () => {
+  beforeEach(() => innovation.reset())
   describe('creation', () => {
     it('should create a new Genome with all properties', () => {
       const genome = new Genome(2, 3)
       expect(genome).to.be.an('object')
-      expect(genome).to.have.all.keys('nodes', 'innovation', 'connections', 'nbInput', 'nbOutput', 'fitness')
-      expect(genome.nodes).to.have.lengthOf(2+3)
+      expect(genome).to.have.all.keys('nodes', 'connections', 'nbInput', 'nbOutput', 'nodeCount', 'fitness')
+      expect(genome.nodes).to.have.lengthOf(2 + 3)
     })
-    it('should create a new Genome with increasing innovation numbers in initial nodes', () => {
+    it('should create a new Genome with increasing node numbers in initial nodes', () => {
       const genome = new Genome(2, 3)
       expect(genome).to.be.an('object')
-      expect(genome.nodes[1].innovationNumber).to.be.above(genome.nodes[0].innovationNumber)
+      expect(genome.nodes[1].number).to.be.above(genome.nodes[0].number)
     })
-    it('should preserve innovation numbers when copying a genome', () => {
+    it('should preserve node numbers when copying a genome', () => {
       const genome1 = new Genome(2, 2)
       genome1.addConnection()
       const genome2 = genome1
-      expect(genome2.nodes[0].innovationNumber).to.equal(genome1.nodes[0].innovationNumber)
-      expect(genome2.nodes[1].innovationNumber).to.equal(genome1.nodes[1].innovationNumber)
-      expect(genome2.connections[0].innovationNumber).to.equal(genome1.connections[0].innovationNumber)
+      expect(genome2.nodes[0].number).to.equal(genome1.nodes[0].number)
+      expect(genome2.nodes[1].number).to.equal(genome1.nodes[1].number)
+      expect(genome2.connections[0].number).to.equal(genome1.connections[0].number)
     })
   })
 
   describe('dna', () => {
     it('should return a valid dna string representing genome', () => {
       const genome = new Genome(2, 3, null, [
-        new Connection(1, 1, 4),
-        new Connection(2, 2, 3),
-        new Connection(3, 2, 4)
+        new Connection(1, 4),
+        new Connection(2, 3),
+        new Connection(2, 4)
       ])
       expect(genome.dna()).to.be.a('string')
       expect(genome.dna()).to.equal('1[1>4],2[2>3],3[2>4]')
     })
   })
 
+  describe('getLastInnovation', () => {
+    it('should return 0 if no innovation occured', () => {
+      const genome = new Genome(1, 2)
+      expect(genome.getLastInnovation()).to.equal(0)
+    })
+    it('should return the last innovation number', () => {
+      const genome = new Genome(2, 3, null, [
+        new Connection(1, 4),
+        new Connection(2, 3),
+        new Connection(2, 4)
+      ])
+      expect(genome.getLastInnovation()).to.equal(3)
+    })
+  })
+
   describe('getNode', () => {
-    it('should get a node by its innovation number', () => {
+    it('should get a node by its number', () => {
       const genome = new Genome(1, 2, [
         new Node(1, 'input'),
         new Node(2, 'output')
       ])
       const node1 = genome.getNode(1)
       expect(node1).to.be.an('object')
-      expect(node1.innovationNumber).to.equal(1)
+      expect(node1.number).to.equal(1)
       expect(node1.type).to.equal('input')
       const node2 = genome.getNode(2)
       expect(node2).to.be.an('object')
-      expect(node2.innovationNumber).to.equal(2)
+      expect(node2.number).to.equal(2)
       expect(node2.type).to.equal('output')
       const node32 = genome.getNode(42)
       expect(node32).to.equal(null)
@@ -86,10 +103,10 @@ describe('Genome', () => {
         new Node(3, 'hidden'),
         new Node(4, 'output')
       ], [
-        new Connection(1, 1, 2),
-        new Connection(2, 1, 3),
-        new Connection(3, 1, 4),
-        new Connection(4, 2, 4)
+        new Connection(1, 2),
+        new Connection(1, 3),
+        new Connection(1, 4),
+        new Connection(2, 4)
       ])
       const newConn = genome.possibleNewConnections()
       expect(newConn).to.be.an('array')
@@ -104,6 +121,21 @@ describe('Genome', () => {
   })
 
   describe('distance', () => {
+    it('should calculate distance of 0 between same genome', () => {
+      const genomeA = new Genome(1, 3, [
+        new Node(1, 'input'),
+        new Node(2, 'hidden'),
+        new Node(3, 'hidden'),
+        new Node(4, 'output')
+      ], [
+        new Connection(1, 2),
+        new Connection(1, 3),
+        new Connection(1, 4),
+        new Connection(2, 4)
+      ])
+      const distance = genomeA.distance(genomeA)
+      expect(distance).to.equal(0)
+    })
     it('should calculate distance between two genomes', () => {
       const genomeA = new Genome(1, 3, [
         new Node(1, 'input'),
@@ -111,10 +143,10 @@ describe('Genome', () => {
         new Node(3, 'hidden'),
         new Node(4, 'output')
       ], [
-        new Connection(1, 1, 2),
-        new Connection(2, 1, 3),
-        new Connection(3, 1, 4),
-        new Connection(4, 2, 4)
+        new Connection(1, 2),
+        new Connection(1, 3),
+        new Connection(1, 4),
+        new Connection(2, 4)
       ])
       const genomeB = genomeA
       const distance = genomeA.distance(genomeB)
@@ -122,19 +154,29 @@ describe('Genome', () => {
       expect(distance).to.be.a('number')
       expect(distance).to.equal(distance2)
     })
-    it('should inscrease distance when mutation occurs', () => {
+    it('should increase distance when mutation occurs', () => {
       const genomeA = new Genome(1, 3, [
         new Node(1, 'input'),
         new Node(2, 'hidden'),
         new Node(3, 'hidden'),
         new Node(4, 'output')
       ], [
-        new Connection(1, 1, 2),
-        new Connection(2, 1, 3),
-        new Connection(3, 1, 4),
-        new Connection(4, 2, 4)
+        new Connection(1, 2),
+        new Connection(1, 3),
+        new Connection(1, 4),
+        new Connection(2, 4)
       ])
-      const genomeB = genomeA
+      const genomeB = new Genome(1, 3, [
+        new Node(1, 'input'),
+        new Node(2, 'hidden'),
+        new Node(3, 'hidden'),
+        new Node(4, 'output')
+      ], [
+        new Connection(1, 2),
+        new Connection(1, 3),
+        new Connection(1, 4),
+        new Connection(2, 4)
+      ])
       const distance1 = genomeA.distance(genomeB)
       genomeB.mutate()
       genomeB.mutate()
@@ -176,19 +218,17 @@ describe('Genome', () => {
       const genome2 = new Genome()
       const children = genome1.crossover(genome2)
       expect(children).to.be.an('object')
-      expect(children).to.have.all.keys('nodes', 'innovation', 'connections', 'nbInput', 'nbOutput', 'fitness')
+      expect(children).to.have.all.keys('nodes', 'nodeCount', 'connections', 'nbInput', 'nbOutput', 'fitness')
     })
 
     it('should create a child with genes from fitest parent', () => {
-      const innovation = new Innovation()
-      innovation.reset()
       const genome1 = new Genome(1, 2)
       const genome2 = genome1
       genome2.addConnection()
       genome2.addConnection()
-      const smallFitness = () => .4
+      const smallFitness = () => 0.4
       genome1.calculateFitness(smallFitness)
-      const betterFitness = () => .8
+      const betterFitness = () => 0.8
       genome2.calculateFitness(betterFitness)
       const children = genome1.crossover(genome2)
       expect(children.nodes).to.have.lengthOf(3)
@@ -204,5 +244,4 @@ describe('Genome', () => {
       // @TODO
     })
   })
-
 })
