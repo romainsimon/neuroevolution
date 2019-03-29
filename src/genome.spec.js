@@ -14,7 +14,7 @@ describe('Genome', () => {
     it('should create a new Genome with all properties', () => {
       const genome = new Genome(2, 3)
       expect(genome).to.be.an('object')
-      expect(genome).to.have.all.keys('nodes', 'connections', 'nbInput', 'nbOutput', 'nodeCount', 'fitness')
+      expect(genome).to.have.all.keys('nodes', 'connections', 'nbInput', 'nbOutput', 'nodeCount', 'fitness', 'sharedFitness')
       expect(genome.nodes).to.have.lengthOf(2 + 3)
     })
     it('should create a new Genome with increasing node numbers in initial nodes', () => {
@@ -218,7 +218,7 @@ describe('Genome', () => {
       const genome2 = new Genome()
       const children = genome1.crossover(genome2)
       expect(children).to.be.an('object')
-      expect(children).to.have.all.keys('nodes', 'nodeCount', 'connections', 'nbInput', 'nbOutput', 'fitness')
+      expect(children).to.have.all.keys('nodes', 'nodeCount', 'connections', 'nbInput', 'nbOutput', 'fitness', 'sharedFitness')
     })
 
     it('should create a child with genes from fitest parent', () => {

@@ -31,14 +31,17 @@ class Genome {
     this.nbInput = nbInput
     this.nbOutput = nbOutput
     this.fitness = 0
+    this.sharedFitness = 0
   }
 
   /**
    * Shows a text representation of DNA/connections
-   * @return {string} DNA respresenting all connections
+   * @param  {Boolean} showDisabled Displays disabled connections
+   * @return {string}               DNA respresenting all connections
    */
-  dna () {
+  dna (showDisabled=true) {
     return this.connections
+      .filter(c => showDisabled ? true : !c.disabled)
       .map(c => `${c.innovationNumber}[${c.inputNode}${c.disabled ? 'X' : '>'}${c.outputNode}]`)
       .join()
   }
@@ -220,7 +223,7 @@ class Genome {
 
   /**
    * Generates the corresponding Neural Network
-   * @TODO
+   * @TODO : Kahn's algorithm ?
    */
   generateNetwork () {
     const nbHidden = this.nodes.filter(node => node.type === 'hidden').length

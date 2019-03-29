@@ -124,7 +124,7 @@ class Population {
       this.reproduce()
     }
     if (this.showLogs) {
-      console.log(`  - Fittest genome: ${this.currentPopulation[0].dna()}`)
+      console.log(`  - Fittest genome: ${this.currentPopulation[0].dna(false)}`)
       console.log(`  - Species: ${this.species.length}`)
       console.log(`  - Population: ${this.currentPopulation.length}`)
       console.log(`  - Max fitness: ${this.currentPopulation[0].fitness}`)
