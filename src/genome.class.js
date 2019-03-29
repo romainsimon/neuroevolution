@@ -39,7 +39,7 @@ class Genome {
    * @param  {Boolean} showDisabled Displays disabled connections
    * @return {string}               DNA respresenting all connections
    */
-  dna (showDisabled=true) {
+  dna (showDisabled = true) {
     return this.connections
       .filter(c => showDisabled ? true : !c.disabled)
       .map(c => `${c.innovationNumber}[${c.inputNode}${c.disabled ? 'X' : '>'}${c.outputNode}]`)
