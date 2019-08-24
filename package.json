@@ -1,6 +1,6 @@
 {
   "name": "neuroevolution",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "NeuroEvolution of Augmenting Topologies (NEAT) implementation with Tensorflow.js",
   "main": "index.js",
   "scripts": {
