@@ -20,11 +20,30 @@
   </a>
 </div>
 
+
+## Table of Contents
+
+- [Installation](#installation)
+- [Usage](#usage)
+  - [1. Initialize a new population](#1-initialize-a-new-population)
+  - [2. Evolve the population](#2-evolve-the-population)
+- [Examples](#examples)
+  - [Xor](#xor)
+- [License](#license)
+
 ## Installation
 
-`npm install neuroevolution`
+Install using [`npm`](https://www.npmjs.com/package/neuroevolution):
 
-`yarn add neuroevolution`
+```bash
+npm install neuroevolution
+```
+
+or Yarn [`yarn`](https://yarnpkg.com/en/package/neuroevolution):
+
+```bash
+yarn add neuroevolution
+```
 
 ## Usage
 
@@ -37,7 +56,7 @@ A population accepts 3 main parameters:
 - `nbInput` Number of input nodes
 - `nbOutput` Number of output node
 
-```
+```javascript
 const { Population } = require('neuroevolution')
 const population = new Population(100, 2, 4)
 ```
@@ -50,7 +69,7 @@ You can start evolving the population using `evolve` with 2 parameters :
 - `iterations` How many iterations to evolve
 - `fitnessFunction` You fitness function that has access to your genome
 
-```
+```javascript
 population.evolve(40, genome => {
   const network = genome.generateNetwork()
   const prediction = network.predict(input)
@@ -64,11 +83,19 @@ if your population current generation is 12, evolving with 40 iterations will tr
 population to generation 52.
 
 
-## Example Xor
+## Examples
 
-`node examples/xor` to run this example
+### Xor
 
+To run this example :
+
+```bash
+node examples/xor
 ```
+
+Sample code :
+
+```javascript
 const { Population } = require('neuroevolution')
 const population = new Population(50, 2, 1, false)
 const xor = [
@@ -88,3 +115,7 @@ population.evolve(1000, genome => {
   return 1 - (error / 4)
 })
 ```
+
+## License
+
+Neuroevolution is [MIT licensed](./LICENSE).
