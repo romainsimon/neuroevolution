@@ -112,7 +112,7 @@ population.evolve(1000, genome => {
     const [prediction] = network.predict(input)
     error += Math.abs(prediction - output)
   }
-  return 1 - (error / 4)
+  return 1 - (error / xor.length)
 })
 ```
 

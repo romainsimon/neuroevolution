@@ -25,7 +25,7 @@ population.evolve(10000, genome => {
     error += Math.abs(prediction - output)
     predictions.push(prediction)
   }
-  const score = 1 - (error / 4)
+  const score = 1 - (error / xor.length)
   display(population, score)
   return score
 })
